@@ -1383,9 +1383,9 @@ body{font-family:"Nunito Sans","Nunito",sans-serif;background:var(--surface-page
       var subj=document.getElementById('ratingSubject').value||'';
       var msg=document.getElementById('ratingMessage').value||'';
       var q=document.getElementById('ratingQuestion').value||'';
-      document.getElementById('previewSubjectLine').textContent='Notice from Cardiology Department: '+(subj||'—');
-      document.getElementById('previewMessageBody').textContent='This is an important message from the Cardiology Department, regarding '+(msg||'—');
-      document.getElementById('previewQuestionText').innerHTML='Please choose a rating between 1 and 5 for the following question:<br><strong>'+(q||'—')+'</strong>';
+      document.getElementById('previewSubjectLine').textContent=subj||'—';
+      document.getElementById('previewMessageBody').textContent=msg||'—';
+      document.getElementById('previewQuestionText').innerHTML=q?'<strong>'+q+'</strong>':'—';
       /* Populate preview label text under rating nums */
       for(var i=1;i<=5;i++){
         var det=document.getElementById('bDetail'+i);
