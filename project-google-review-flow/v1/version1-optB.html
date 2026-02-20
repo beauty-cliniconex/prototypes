@@ -930,7 +930,7 @@ body{font-family:"Nunito Sans","Nunito",sans-serif;background:var(--surface-page
                     <label class="optB-field-label">Button URL (optional):</label>
                     <input class="form-input response-url" type="url" placeholder="https://" data-rating="1" oninput="validateUrl(this)" onblur="validateUrl(this)"/>
                     <div class="url-error-msg" data-rating="1"><span class="material-icons">error_outline</span> Please enter a valid URL (e.g. https://example.com)</div>
-                    <label class="optB-field-label">Button Text:</label>
+                    <label class="optB-field-label">Button Text (optional):</label>
                     <input class="form-input response-link-text" type="text" placeholder="e.g. Leave a Google Review" data-rating="1"/>
                     </div>
                   </div>
@@ -950,7 +950,7 @@ body{font-family:"Nunito Sans","Nunito",sans-serif;background:var(--surface-page
                     <label class="optB-field-label">Button URL (optional):</label>
                     <input class="form-input response-url" type="url" placeholder="https://" data-rating="2" oninput="validateUrl(this)" onblur="validateUrl(this)"/>
                     <div class="url-error-msg" data-rating="2"><span class="material-icons">error_outline</span> Please enter a valid URL (e.g. https://example.com)</div>
-                    <label class="optB-field-label">Button Text:</label>
+                    <label class="optB-field-label">Button Text (optional):</label>
                     <input class="form-input response-link-text" type="text" placeholder="e.g. Leave a Google Review" data-rating="2"/>
                     </div>
                   </div>
@@ -970,7 +970,7 @@ body{font-family:"Nunito Sans","Nunito",sans-serif;background:var(--surface-page
                     <label class="optB-field-label">Button URL (optional):</label>
                     <input class="form-input response-url" type="url" placeholder="https://" data-rating="3" oninput="validateUrl(this)" onblur="validateUrl(this)"/>
                     <div class="url-error-msg" data-rating="3"><span class="material-icons">error_outline</span> Please enter a valid URL (e.g. https://example.com)</div>
-                    <label class="optB-field-label">Button Text:</label>
+                    <label class="optB-field-label">Button Text (optional):</label>
                     <input class="form-input response-link-text" type="text" placeholder="e.g. Leave a Google Review" data-rating="3"/>
                     </div>
                   </div>
@@ -990,7 +990,7 @@ body{font-family:"Nunito Sans","Nunito",sans-serif;background:var(--surface-page
                     <label class="optB-field-label">Button URL (optional):</label>
                     <input class="form-input response-url" type="url" placeholder="https://" data-rating="4" oninput="validateUrl(this)" onblur="validateUrl(this)"/>
                     <div class="url-error-msg" data-rating="4"><span class="material-icons">error_outline</span> Please enter a valid URL (e.g. https://example.com)</div>
-                    <label class="optB-field-label">Button Text:</label>
+                    <label class="optB-field-label">Button Text (optional):</label>
                     <input class="form-input response-link-text" type="text" placeholder="e.g. Leave a Google Review" data-rating="4"/>
                     </div>
                   </div>
@@ -1010,7 +1010,7 @@ body{font-family:"Nunito Sans","Nunito",sans-serif;background:var(--surface-page
                     <label class="optB-field-label">Button URL (optional):</label>
                     <input class="form-input response-url" type="url" placeholder="https://" data-rating="5" oninput="validateUrl(this)" onblur="validateUrl(this)"/>
                     <div class="url-error-msg" data-rating="5"><span class="material-icons">error_outline</span> Please enter a valid URL (e.g. https://example.com)</div>
-                    <label class="optB-field-label">Button Text:</label>
+                    <label class="optB-field-label">Button Text (optional):</label>
                     <input class="form-input response-link-text" type="text" placeholder="e.g. Leave a Google Review" data-rating="5"/>
                     </div>
                   </div>
@@ -1383,9 +1383,9 @@ body{font-family:"Nunito Sans","Nunito",sans-serif;background:var(--surface-page
       var subj=document.getElementById('ratingSubject').value||'';
       var msg=document.getElementById('ratingMessage').value||'';
       var q=document.getElementById('ratingQuestion').value||'';
-      document.getElementById('previewSubjectLine').textContent=subj||'—';
-      document.getElementById('previewMessageBody').textContent=msg||'—';
-      document.getElementById('previewQuestionText').innerHTML=q?'<strong>'+q+'</strong>':'—';
+      document.getElementById('previewSubjectLine').textContent=subj?'Notice from Cardiology Department: '+subj:'—';
+      document.getElementById('previewMessageBody').textContent=msg?'This is an important message from the Cardiology Department regarding: '+msg:'—';
+      document.getElementById('previewQuestionText').innerHTML=q?'Please choose a rating between 1 and 5 for the following question: <strong>'+q+'</strong>':'—';
       /* Populate preview label text under rating nums */
       for(var i=1;i<=5;i++){
         var det=document.getElementById('bDetail'+i);
@@ -1572,8 +1572,8 @@ body{font-family:"Nunito Sans","Nunito",sans-serif;background:var(--surface-page
     if(d5){var inp=d5.querySelector('input.form-input');if(inp)label5=inp.value||'Excellent';}
     document.getElementById('smsBubbleOutgoing').textContent=
       'This is a message from Cardiology Department, regarding: '+msg+
-      '. Please respond with a rating between 1 and 5 to the following question: '+q+
-      '\nWhere 1 means: '+label1+' and 5 means: '+label5;
+      '.  Please respond with a rating between 1 and 5 to the following question: '+q+
+      '.  Where 1 means: '+label1+' and 5 means: '+label5;
     showSmsResponse(1);
   }
   function showSmsResponse(n){
