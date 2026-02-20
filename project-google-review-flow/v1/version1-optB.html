@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="en" data-product="acm">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Cliniconex ACM</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&family=Nunito:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<style>
+:root{
+  --ccx-green-100:#ADC837;
+  --ccx-dark-grey-100:#404041;
+  --ccx-dark-grey-120:#303030;
+  --ccx-dark-grey-70:#656566;
+  --ccx-dark-grey-50:#999999;
+  --ccx-teal-100:#02475A;
+  --ccx-teal-70:#356D7D;
+  --ccx-teal-50:#759EA9;
+  --ccx-teal-30:#A5C4CD;
+  --ccx-light-grey-30:#FCFCFC;
+  --ccx-light-grey-50:#FAFAFA;
+  --ccx-neutral-200:#E8E8E8;
+  --ccx-neutral-300:#E1E6EF;
+  --ccx-white:#FFFFFF;
+  --ccx-error:#F44336;
+  --ccx-warning:#BF6A02;
+  --action-bg:var(--ccx-teal-100);
+  --action-hover:var(--ccx-teal-70);
+  --action-active:var(--ccx-teal-50);
+  --action-text:var(--ccx-light-grey-30);
+  --surface:var(--ccx-light-grey-30);
+  --surface-nav:var(--ccx-dark-grey-100);
+  --surface-page:var(--ccx-light-grey-50);
+  --surface-elevated:var(--ccx-white);
+  --text:var(--ccx-dark-grey-100);
+  --text-secondary:var(--ccx-dark-grey-70);
+  --text-disabled:var(--ccx-dark-grey-50);
+  --text-on-nav:var(--ccx-white);
+  --border-accent:var(--ccx-teal-100);
+  --border-decorative:var(--ccx-green-100);
+  --sp-xs:4px;--sp-sm:8px;--sp-md:16px;--sp-lg:24px;--sp-xl:32px;
+  --radius-sm:2px;--radius-md:4px;--radius-lg:8px;
+  --fab-color:#EC991D;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"Nunito Sans","Nunito",sans-serif;background:var(--surface-page);color:var(--text);min-height:100vh;}
+
+/* PAGE VISIBILITY */
+.page{display:none;}
+.page.active{display:flex;flex-direction:column;min-height:100vh;}
+
+/* TOP NAV */
+.top-nav{display:flex;align-items:center;gap:var(--sp-md);padding:0 var(--sp-lg);height:60px;background:var(--surface-nav);color:var(--text-on-nav);border-bottom:4px solid var(--border-decorative);flex-shrink:0;position:sticky;top:0;z-index:100;}
+.top-nav .logo{width:32px;height:32px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.top-nav .logo svg{width:28px;height:36px;}
+
+.top-nav .nav-section{display:flex;align-items:center;justify-content:space-between;position:relative;}
+.top-nav .nav-left{display:flex;align-items:center;gap:0;}
+.top-nav .nav-title{width:120px;text-align:right;padding-right:10px;font-size:14px;color:var(--text-on-nav);white-space:nowrap;}
+.context-container{position:relative;}
+.context-toggle{display:flex;align-items:center;gap:4px;color:var(--ccx-teal-light);font-size:14px;cursor:pointer;text-decoration:none;padding:6px 10px;border-radius:var(--radius-md);white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis;}
+.context-toggle:hover{opacity:.85;}
+.context-toggle .material-icons{font-size:20px;transition:transform .2s;}
+.context-container{position:relative;}
+.context-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;width:300px;background:var(--surface-elevated);border-radius:0 0 var(--radius-lg) var(--radius-lg);box-shadow:0 8px 24px rgba(0,0,0,.2);z-index:200;overflow:hidden;}
+.context-dropdown.open{display:block;}
+.context-search{display:flex;align-items:center;padding:8px 14px;border-bottom:2px solid var(--ccx-teal-100);position:relative;}
+.context-search input{flex:1;border:none;outline:none;font-family:inherit;font-size:14px;color:var(--text);background:transparent;}
+.context-search input::placeholder{color:var(--text-disabled);}
+.context-search .search-icon{position:absolute;right:14px;font-size:18px;color:var(--text-disabled);cursor:pointer;}
+.context-search[data-has-content] .search-icon::after{content:'close';font-family:'Material Icons';}
+.context-header{font-size:13px;font-weight:700;color:var(--ccx-teal-100);padding:12px 14px 4px;text-transform:capitalize;}
+.context-item{padding:10px 14px;font-size:14px;color:var(--text);cursor:pointer;transition:background .12s;display:block;text-decoration:none;}
+.context-item:hover{background:var(--ccx-light-grey-50);}
+.context-item.selected{background:var(--ccx-teal-100);color:#fff;}
+.context-section-end{margin-bottom:4px;border-bottom:1px solid var(--ccx-light-grey-50);}
+.top-nav .spacer{flex:1;}
+.top-nav-actions{display:flex;align-items:center;gap:var(--sp-lg);}
+.top-nav-actions a{display:flex;align-items:center;gap:6px;color:var(--text-on-nav);text-decoration:none;font-size:14px;}
+.top-nav-actions a:hover{opacity:.75;}
+
+/* APP SHELL */
+.app-shell{display:flex;flex:1;}
+
+/* SIDE NAV */
+.side-nav{width:60px;background:var(--surface-nav);display:flex;flex-direction:column;align-items:center;padding-top:var(--sp-md);gap:var(--sp-sm);flex-shrink:0;position:fixed;top:60px;left:0;z-index:50;height:calc(100vh - 60px);}
+.side-nav a{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-md);color:var(--text-on-nav);text-decoration:none;transition:background .2s;}
+.side-nav a svg{width:24px;height:24px;flex-shrink:0;}
+.side-nav a:hover{background:rgba(255,255,255,.12);}
+.side-nav a.active{background:var(--ccx-dark-grey-120);}
+
+/* EXPANDABLE SIDE NAV */
+.expanded-nav{position:fixed;top:60px;left:-280px;bottom:0;width:280px;background:var(--surface-nav);color:var(--text-on-nav);z-index:60;transition:left .3s ease;overflow-y:auto;display:flex;flex-direction:column;padding-top:2rem;}
+.expanded-nav.open{left:0;}
+.nav-section{padding:0;}
+.nav-section-header{display:flex;align-items:center;gap:var(--sp-sm);padding:12px 16px;font-size:15px;font-weight:600;color:var(--text-on-nav);cursor:default;}
+.nav-section-header .material-icons{font-size:22px;color:var(--text-on-nav);}
+.nav-sub-item{display:flex;align-items:center;gap:var(--sp-sm);padding:10px 16px 10px 28px;font-size:14px;color:rgba(255,255,255,.85);cursor:pointer;transition:background .15s;text-decoration:none;}
+.nav-sub-item:hover{background:rgba(255,255,255,.08);}
+.nav-sub-item .material-icons{font-size:20px;color:rgba(255,255,255,.7);}
+.nav-ico{width:20px;height:20px;flex-shrink:0;}
+.nav-section-header .nav-ico{width:22px;height:22px;}
+.nav-sub-item.active-item{color:#fff;}
+.nav-section-divider{height:1px;background:rgba(255,255,255,.1);margin:4px 0;}
+
+/* ORG DROPDOWN */
+
+
+/* Top Nav Dropdowns (Settings, Support) */
+.top-dropdown-wrap{position:relative;}
+.top-dd-trigger{white-space:nowrap;}
+.top-dd-body{display:none;position:absolute;top:100%;right:0;min-width:200px;background:var(--ccx-dark-grey-120);border-radius:0 0 var(--radius-md) var(--radius-md);box-shadow:0 6px 16px rgba(0,0,0,.3);z-index:200;overflow:hidden;padding:4px 0;}
+.top-dd-body.open{display:block;}
+.top-dd-user{display:flex;align-items:center;gap:8px;padding:10px 16px;color:#fff;font-size:14px;background:var(--ccx-dark-grey-120);border-bottom:1px solid rgba(255,255,255,.1);}
+.top-dd-user .material-icons{font-size:20px;}
+.top-dd-link{display:flex;align-items:center;gap:8px;padding:10px 16px;color:#fff;font-size:14px;text-decoration:none;transition:background .12s;white-space:nowrap;}
+.top-dd-link:hover{background:rgba(255,255,255,.08);}
+
+/* â”€â”€â”€ TEMPLATE LIST PAGE â”€â”€â”€ */
+.main-content{flex:1;padding:var(--sp-xl);max-width:720px;margin:0 auto;padding-bottom:80px;}
+.search-wrapper{position:relative;background:var(--surface-elevated);border-radius:var(--radius-md);box-shadow:0 2px 6px rgba(0,0,0,.10);margin-bottom:var(--sp-xl);display:flex;align-items:center;}
+.search-wrapper input{flex:1;border:none;outline:none;font-family:inherit;font-size:16px;padding:14px var(--sp-md);background:transparent;color:var(--text);}
+.search-wrapper input::placeholder{color:var(--text-disabled);}
+.search-wrapper .material-icons{padding:0 var(--sp-md);color:var(--text-disabled);}
+.category-list{display:flex;flex-direction:column;gap:var(--sp-md);}
+.category-row{background:var(--ccx-dark-grey-100);border-radius:var(--radius-md);display:flex;align-items:center;padding:0 var(--sp-md);height:56px;cursor:pointer;transition:background .15s;user-select:none;}
+.category-row:hover{background:var(--ccx-dark-grey-70);}
+.category-row .cat-name{flex:1;font-size:16px;font-weight:600;color:var(--text-on-nav);}
+.category-row .arrow-icon{color:rgba(255,255,255,.7);font-size:20px;transition:transform .2s;}
+.category-row.open .arrow-icon{transform:rotate(90deg);}
+.category-row .icon-more{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .15s;color:rgba(255,255,255,.7);}
+.category-row .icon-more:hover{background:rgba(255,255,255,.12);}
+.template-items{display:none;flex-direction:column;gap:1px;background:var(--ccx-neutral-300);border:1px solid var(--ccx-neutral-300);border-radius:0 0 var(--radius-md) var(--radius-md);margin-top:-4px;overflow:hidden;}
+.template-items.open{display:flex;}
+.template-item{display:flex;align-items:center;padding:10px var(--sp-md);background:var(--surface-elevated);font-size:14px;color:var(--text);cursor:pointer;transition:background .15s;}
+.template-item:hover{background:var(--ccx-light-grey-50);}
+.template-item .item-badges{display:flex;gap:var(--sp-sm);align-items:center;flex:1;}
+.badge-shared{font-size:11px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;}
+.badge-lock{color:var(--text-disabled) !important;font-size:16px !important;}
+.template-item .material-icons{color:var(--text-disabled);font-size:18px;}
+.fab-group{position:fixed;bottom:32px;right:32px;display:flex;gap:20px;align-items:center;justify-content:flex-end;z-index:50;}
+.fab{width:56px;height:56px;border-radius:50%;background:var(--fab-color);color:var(--ccx-white);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.25);transition:transform .15s,box-shadow .15s;position:relative;}
+.fab:hover{transform:scale(1.07);box-shadow:0 6px 18px rgba(0,0,0,.3);}
+.fab .material-icons{font-size:24px;}
+.fab::after{content:attr(data-tooltip);position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);background:rgba(60,60,60,.92);color:#fff;padding:8px 16px;border-radius:0;font-size:14px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;}
+.fab:hover::after{opacity:1;}
+
+
+/* â”€â”€â”€ CREATE MESSAGE PAGE â”€â”€â”€ */
+.create-content{flex:1;padding:var(--sp-xl) 180px var(--sp-xl) 180px;max-width:none;width:100%;margin:0;}
+.page-title{font-size:2rem;font-weight:700;color:var(--ccx-dark-grey-120);margin-bottom:6px;}
+.title-underline{height:3px;width:200px;background:var(--border-decorative);border-radius:2px;margin-bottom:var(--sp-xl);}
+.form-card{background:var(--surface-elevated);border-radius:var(--radius-lg);box-shadow:0 1px 4px rgba(0,0,0,.08);padding:var(--sp-lg) var(--sp-xl);margin-bottom:var(--sp-md);}
+.field-label{font-size:13px;font-weight:600;color:#ADC838;margin-bottom:var(--sp-sm);display:flex;align-items:center;gap:6px;}
+.field-label .material-icons{font-size:16px;color:var(--text-disabled);}
+.form-input{width:100%;border:none;border-bottom:1px solid var(--ccx-neutral-300);outline:none;font-family:inherit;font-size:15px;color:var(--text);padding:8px 0;background:transparent;transition:border-color .2s;}
+.form-input:focus{border-bottom-color:var(--border-decorative);}
+.form-input::placeholder{color:var(--text-disabled);}
+.form-row{display:flex;align-items:center;gap:var(--sp-md);}
+.form-row label{font-family:"Nunito Sans",sans-serif;font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;}
+/* Custom Message Type Dropdown */
+.msg-type-wrapper{position:relative;width:100%;flex:1;}
+.msg-type-trigger{display:flex;align-items:center;justify-content:space-between;border:none;border-bottom:1px solid var(--ccx-neutral-300);font-family:inherit;font-size:15px;color:#6CB4D9;padding:8px 0;background:transparent;cursor:pointer;width:100%;text-align:left;}
+.msg-type-trigger .material-icons{color:var(--text-disabled);font-size:20px;transition:transform .2s;}
+.msg-type-trigger.open .material-icons{transform:rotate(180deg);}
+.msg-type-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface-elevated);border-radius:0 0 var(--radius-lg) var(--radius-lg);box-shadow:0 6px 20px rgba(0,0,0,.12);z-index:100;overflow:hidden;}
+.msg-type-dropdown.open{display:block;}
+.msg-type-option{padding:18px 20px;font-size:16px;color:#6CB4D9;cursor:pointer;border-bottom:1px solid var(--ccx-neutral-200);transition:background .12s;}
+.msg-type-option:last-child{border-bottom:none;}
+.msg-type-option:hover,.msg-type-option.selected{background:#f0f0f0;}
+
+/* Option B â€” Side-by-Side Split */
+.optB-container{background:var(--surface-elevated);border-radius:var(--radius-lg);padding:20px;border:1px solid #d0d0d0;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.optB-pills-row{display:flex;gap:8px;margin-bottom:20px;}
+.optB-num{width:48px;height:48px;background:#E8E8E8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--ccx-dark-grey-120);cursor:pointer;transition:all .15s;user-select:none;position:relative;}
+.optB-num:hover{background:#D0D0D0;}
+.optB-num.selected{background:#ADC838;color:#fff;}
+.optB-num.selected::after{content:'';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:8px solid #ADC838;}
+.ty-accordion-header{margin:24px -20px -20px;padding:12px 20px;background:#f5f5f5;border-top:1px solid #e0e0e0;border-radius:0 0 var(--radius-md) var(--radius-md);cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none;transition:background .15s;}
+.ty-accordion-header:hover{background:#ececec;}
+.ty-accordion-header.open{margin-bottom:0;border-bottom:1px solid #e0e0e0;border-radius:0;}
+.ty-accordion-header .ty-title{font-size:14px;font-weight:400;font-family:Nunito,sans-serif;color:var(--text-secondary);}
+.ty-accordion-header .material-icons{font-size:20px;color:var(--text-secondary);transition:transform .2s;}
+.ty-accordion-header.open .material-icons{transform:rotate(180deg);}
+.ty-accordion-body{display:none;padding:0 20px 20px;margin:0 -20px -20px;border-radius:0 0 var(--radius-md) var(--radius-md);}
+.ty-accordion-body.open{display:block;}
+.optB-detail{}
+.optB-detail-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.optB-detail-num{width:32px;height:32px;border-radius:50%;background:#ADC838;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;}
+.optB-detail-title{font-size:15px;font-weight:600;color:var(--text);}
+.optB-field-label{font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-top:16px;margin-bottom:6px;}
+.optB-detail .form-input{border:1px solid #d0d0d0;border-radius:var(--radius-md);padding:10px 12px;font-size:14px;background:var(--surface-elevated);transition:border-color .2s;}
+.optB-detail .form-input:focus{border-color:#ADC838;border-bottom-color:#ADC838;}
+.optB-detail textarea{width:100%;min-height:90px;border:1px solid #d0d0d0;border-radius:var(--radius-md);font-family:inherit;font-size:14px;color:var(--text);padding:10px 12px;outline:none;resize:vertical;background:var(--surface-elevated);transition:border-color .2s;}
+.optB-detail textarea:focus{border-color:#ADC838;}
+/* URL Validation Error State */
+.optB-detail .form-input.input-error{border-color:var(--ccx-error);background:#FFF5F5;}
+.optB-detail .form-input.input-error:focus{border-color:var(--ccx-error);border-bottom-color:var(--ccx-error);}
+.url-error-msg{display:none;font-size:12px;color:var(--ccx-error);margin-top:4px;align-items:center;gap:4px;}
+.url-error-msg .material-icons{font-size:14px;}
+.url-error-msg.visible{display:flex;}
+.optB-detail .form-input.input-valid{border-color:var(--ccx-green-100);}
+.url-valid-icon{display:none;font-size:14px;color:var(--ccx-green-100);margin-left:4px;}
+.url-valid-icon.visible{display:inline;}
+/* Rating Section */
+.rating-section{display:none;}
+.rating-section.visible{display:block;}
+.rating-config{display:flex;flex-direction:column;gap:var(--sp-lg);}
+.rating-label{font-family:"Nunito Sans",sans-serif;font-size:14px;font-weight:600;color:#404041;margin-bottom:var(--sp-sm);}
+.rating-boxes-row{display:flex;gap:var(--sp-sm);}
+.rating-label-box{width:88px;height:52px;background:#E8E8E8;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;padding:4px 6px;font-size:13px;color:var(--text);text-align:center;cursor:text;outline:none;word-break:break-word;overflow:hidden;line-height:1.2;}
+.rating-label-box::after{content:'';display:block;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid #E8E8E8;position:absolute;margin-top:52px;}
+.rating-label-box-wrapper{display:flex;flex-direction:column;align-items:center;position:relative;}
+.rating-label-box-wrapper .caret{width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:7px solid #E8E8E8;margin-top:-1px;}
+.rating-number-box{width:88px;height:72px;background:#E8E8E8;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:var(--ccx-dark-grey-120);cursor:pointer;transition:all .15s;user-select:none;}
+.rating-number-box:hover{background:#D0D0D0;}
+.rating-number-box.selected{background:#ADC838;color:#fff;}
+/* Rating Response Messages */
+.rating-responses{margin-top:var(--sp-xl);}
+.rating-responses-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--sp-md);}
+.rating-responses-title{font-size:14px;font-weight:600;color:var(--text);}
+.rating-response-card{background:var(--ccx-light-grey-50);border-radius:var(--radius-md);margin-bottom:var(--sp-sm);overflow:hidden;border:1px solid #e0e0e0;}
+.rating-response-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none;transition:background .15s;}
+.rating-response-header:hover{background:#e8e8e8;}
+.rating-response-header-left{display:flex;align-items:center;gap:10px;}
+.rating-response-num{width:32px;height:32px;border-radius:50%;background:#ADC838;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;}
+.rating-response-header-text{font-size:14px;color:var(--text);}
+.rating-response-header-text .response-preview{color:var(--text-secondary);font-size:13px;margin-left:6px;}
+.rating-response-header .material-icons{font-size:20px;color:var(--text-secondary);transition:transform .2s;}
+.rating-response-header.open .material-icons{transform:rotate(180deg);}
+.rating-response-body{display:none;padding:0 16px 16px;border-top:1px solid #e0e0e0;}
+.rating-response-body.open{display:block;}
+.rating-response-body .form-input{margin-top:12px;}
+.rating-response-body label{font-size:13px;color:var(--text-secondary);display:block;margin-top:12px;margin-bottom:4px;}
+.rating-response-body textarea{width:100%;min-height:80px;border:none;border-bottom:1px solid var(--ccx-neutral-300);font-family:inherit;font-size:14px;color:var(--text);padding:8px 0;outline:none;resize:vertical;background:transparent;}
+.rating-response-body textarea:focus{border-bottom-color:#ADC838;}
+.rating-response-body .url-input-row{display:flex;align-items:center;gap:8px;margin-top:8px;}
+.rating-response-body .url-input-row input{flex:1;}
+.rating-response-body .url-input-row .material-icons{font-size:18px;color:var(--text-disabled);cursor:pointer;}
+.rating-response-body .url-input-row .material-icons:hover{color:#ADC838;}
+/* Thank You Page Preview */
+.thankyou-preview-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;font-size:13px;color:var(--ccx-teal-100);background:transparent;border:1px solid var(--ccx-teal-100);border-radius:var(--radius-md);cursor:pointer;transition:all .15s;font-family:inherit;}
+.thankyou-preview-btn:hover{background:var(--ccx-teal-100);color:#fff;}
+.thankyou-preview-btn .material-icons{font-size:16px;}
+/* Rating Tabs (Edit / Preview) */
+.rating-tabs{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-bottom:var(--sp-md);}
+.rating-tab-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 20px;font-size:14px;font-weight:600;font-family:inherit;color:#8A8A8E;background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:all .15s;}
+.rating-tab-btn:hover{color:var(--ccx-teal-100);}
+.rating-tab-btn.active{color:var(--ccx-teal-100);border-bottom-color:var(--ccx-teal-100);}
+.rating-tab-btn .material-icons{font-size:18px;}
+.rating-tab-content{display:none;}
+.rating-tab-content.active{display:block;}
+/* Inline Preview Panel */
+.inline-preview-panel{text-align:center;}
+.inline-preview-card{background:var(--surface-elevated);border:1px solid #d0d0d0;border-radius:var(--radius-lg);padding:32px 24px;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.inline-preview-card .preview-icon{font-size:48px;color:#ADC838;margin-bottom:12px;}
+.inline-preview-card .preview-heading{font-size:20px;font-weight:600;color:var(--text);margin-bottom:10px;}
+.inline-preview-card .preview-message{font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:16px;}
+.inline-preview-card .preview-link{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#ADC838;color:#fff;border-radius:var(--radius-md);text-decoration:none;font-size:14px;font-weight:500;transition:opacity .15s;}
+.inline-preview-card .preview-link:hover{opacity:.85;}
+.inline-preview-nums{display:flex;gap:6px;justify-content:center;margin-bottom:20px;}
+.inline-preview-nums .pnum-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;}
+.inline-preview-nums .pnum{width:48px;height:48px;border-radius:50%;background:#E8E8E8;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;transition:all .15s;}
+.inline-preview-nums .pnum-wrap.active .pnum{background:#ADC838;color:#fff;}
+.inline-preview-nums .pnum-label{font-size:11px;color:var(--text-secondary);max-width:70px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-height:16px;}
+.preview-channel-opt:hover{background:#f0f0f0;}
+/* SMS Phone Mockup */
+.sms-phone{max-width:380px;margin:0 auto;background:#fff;border-radius:24px;border:1px solid #d0d0d0;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08);}
+.sms-phone-header{background:#f5f5f5;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #e0e0e0;}
+.sms-phone-header .material-icons{font-size:18px;color:#007AFF;}
+.sms-phone-header span:last-child{font-size:15px;font-weight:600;color:var(--text);}
+.sms-phone-body{padding:20px 14px;background:#f9f9f9;min-height:180px;display:flex;flex-direction:column;gap:10px;}
+.sms-bubble{max-width:82%;padding:10px 14px;font-size:13px;line-height:1.55;word-wrap:break-word;white-space:pre-line;}
+.sms-bubble.incoming{background:#e5e5ea;color:var(--text);align-self:flex-start;border-radius:18px 18px 18px 4px;}
+.sms-bubble.outgoing{background:#007AFF;color:#fff;align-self:flex-end;border-radius:18px 18px 4px 18px;font-weight:600;font-size:15px;padding:8px 18px;}
+.sms-bubble .sms-link{color:#007AFF;text-decoration:underline;word-break:break-all;}
+.sms-bubble.incoming .sms-response-heading{font-weight:600;margin-bottom:3px;}
+.sms-input-bar{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid #e0e0e0;background:#f5f5f5;}
+.sms-input-bar .sms-input-field{flex:1;padding:8px 14px;border-radius:20px;border:1px solid #d0d0d0;background:#fff;font-size:13px;color:var(--text-disabled);}
+.sms-input-bar .material-icons{font-size:22px;color:#007AFF;}
+/* Voice Phone Mockup */
+.voice-phone{max-width:380px;margin:0 auto;background:#fff;border-radius:24px;border:1px solid #d0d0d0;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08);}
+.voice-phone-header{background:var(--ccx-teal-100);padding:16px 20px;display:flex;align-items:center;gap:14px;color:#fff;}
+.voice-phone-header .material-icons{font-size:28px;}
+.voice-caller{font-size:16px;font-weight:600;}
+.voice-status{font-size:12px;opacity:.8;}
+.voice-phone-body{padding:28px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;}
+.voice-waveform{display:flex;align-items:center;gap:3px;height:40px;margin-bottom:12px;}
+.wave-bar{width:3px;height:8px;background:var(--ccx-teal-30);border-radius:2px;transition:height .15s;}
+.voice-waveform.active .wave-bar{animation:waveAnim .6s ease-in-out infinite alternate;}
+.wave-bar:nth-child(1){animation-delay:0s;}
+.wave-bar:nth-child(2){animation-delay:.07s;}
+.wave-bar:nth-child(3){animation-delay:.14s;}
+.wave-bar:nth-child(4){animation-delay:.21s;}
+.wave-bar:nth-child(5){animation-delay:.28s;}
+.wave-bar:nth-child(6){animation-delay:.35s;}
+.wave-bar:nth-child(7){animation-delay:.42s;}
+.wave-bar:nth-child(8){animation-delay:.35s;}
+.wave-bar:nth-child(9){animation-delay:.28s;}
+.wave-bar:nth-child(10){animation-delay:.21s;}
+.wave-bar:nth-child(11){animation-delay:.14s;}
+.wave-bar:nth-child(12){animation-delay:.07s;}
+.wave-bar:nth-child(13){animation-delay:0s;}
+.wave-bar:nth-child(14){animation-delay:.07s;}
+.wave-bar:nth-child(15){animation-delay:.14s;}
+@keyframes waveAnim{0%{height:6px;}100%{height:32px;}}
+.voice-timer{font-size:24px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;margin-bottom:16px;}
+.voice-play-btn{width:64px;height:64px;border-radius:50%;background:var(--ccx-teal-100);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(2,71,90,.3);transition:transform .15s,box-shadow .15s;}
+.voice-play-btn:hover{transform:scale(1.06);box-shadow:0 6px 18px rgba(2,71,90,.35);}
+.voice-play-btn .material-icons{font-size:32px;}
+.voice-script-toggle{display:inline-flex;align-items:center;gap:4px;margin-top:16px;font-size:13px;color:var(--ccx-teal-100);cursor:pointer;padding:4px 8px;border-radius:var(--radius-md);transition:background .15s;}
+.voice-script-toggle:hover{background:rgba(2,71,90,.06);}
+.voice-script{margin-top:12px;text-align:left;background:#f7f8fa;border:1px solid #e8e8e8;border-radius:var(--radius-md);padding:16px;width:100%;}
+.voice-script-section{padding:4px 0;}
+.voice-script-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-secondary);margin-bottom:8px;}
+.voice-script-text{font-size:13px;color:var(--text);line-height:1.6;}
+.voice-script-divider{height:1px;background:#e0e0e0;margin:12px 0;}
+.thankyou-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;}
+.thankyou-overlay.open{display:flex;}
+.thankyou-modal{background:#fff;border-radius:var(--radius-lg);width:420px;max-width:90vw;box-shadow:0 12px 40px rgba(0,0,0,.25);overflow:hidden;position:relative;}
+.thankyou-modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #e8e8e8;}
+.thankyou-modal-header span{font-size:14px;font-weight:600;color:var(--text);}
+.thankyou-modal-header .material-icons{font-size:20px;color:var(--text-secondary);cursor:pointer;}
+.thankyou-modal-body{padding:32px 20px;text-align:center;}
+.thankyou-modal-body .thankyou-icon{font-size:48px;color:#ADC838;margin-bottom:16px;}
+.thankyou-modal-body .thankyou-heading{font-size:20px;font-weight:600;color:var(--text);margin-bottom:12px;}
+.thankyou-modal-body .thankyou-message{font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:20px;}
+.thankyou-modal-body .thankyou-link{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#ADC838;color:#fff;border-radius:var(--radius-md);text-decoration:none;font-size:14px;font-weight:500;transition:opacity .15s;}
+.thankyou-modal-body .thankyou-link:hover{opacity:.85;}
+
+/* Default fields visibility */
+.default-fields{display:block;}
+.default-fields.hidden{display:none;}
+.attach-row{display:flex;align-items:center;gap:var(--sp-sm);padding:10px 0;color:var(--text-disabled);font-size:14px;cursor:pointer;}
+.attach-row:hover{color:var(--text);}
+.ai-section{margin-top:var(--sp-md);}
+.ai-label{font-size:14px;font-weight:600;color:var(--text);}
+.ai-label .new-badge{color:var(--ccx-green-100);font-weight:700;margin-right:4px;}
+.audience-pills{display:flex;gap:var(--sp-sm);margin-top:var(--sp-sm);}
+.pill{padding:6px 16px;border-radius:20px;border:1px solid var(--ccx-neutral-300);background:var(--surface-elevated);font-size:13px;color:var(--text);cursor:pointer;transition:all .15s;}
+.pill.active,.pill:hover{border-color:var(--ccx-teal-70);background:var(--ccx-teal-70);color:#fff;}
+.vault-row{display:flex;align-items:center;gap:var(--sp-md);}
+.vault-label{font-size:14px;color:var(--text);}
+.toggle-switch{position:relative;width:44px;height:24px;}
+.toggle-switch input{opacity:0;width:0;height:0;}
+.slider{position:absolute;inset:0;background:var(--ccx-neutral-300);border-radius:12px;transition:.3s;cursor:pointer;}
+.slider:before{content:"";position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;}
+.toggle-switch input:checked+.slider{background:var(--ccx-teal-70);}
+.toggle-switch input:checked+.slider:before{transform:translateX(20px);}
+
+/* Floating Label Inputs */
+.float-field{position:relative;padding-top:18px;}
+.float-field .float-label{position:absolute;left:0;top:26px;font-size:15px;color:var(--text-disabled);pointer-events:none;transition:all .2s ease;transform-origin:left top;}
+.float-field .form-input{padding:8px 0;}
+.float-field .form-input:focus ~ .float-label,
+.float-field .form-input.has-value ~ .float-label{top:0;font-size:12px;color:var(--text-secondary);}
+.float-field .form-input:focus{border-bottom:2px solid var(--ccx-dark-grey-120);}
+
+/* STICKY FOOTER BAR (create page) */
+.create-footer{position:fixed;bottom:0;left:0;right:0;height:64px;background:var(--surface-elevated);border-top:3px solid var(--border-decorative);display:flex;align-items:center;justify-content:flex-end;gap:var(--sp-sm);padding:0 var(--sp-xl);}
+.btn-cancel{background:transparent;border:none;color:var(--text-secondary);font-family:inherit;font-size:14px;cursor:pointer;padding:8px 16px;border-radius:var(--radius-md);}
+.btn-cancel:hover{color:var(--text);}
+.btn-outline{background:transparent;border:2px solid var(--ccx-teal-100);color:var(--ccx-teal-100);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:8px 20px;border-radius:var(--radius-md);transition:all .15s;}
+.btn-outline:hover{background:var(--ccx-teal-100);color:#fff;}
+.btn-divider{width:1px;height:32px;background:var(--ccx-neutral-300);}
+.btn-primary{background:var(--ccx-teal-100);border:2px solid var(--ccx-teal-100);color:#fff;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:8px 20px;border-radius:var(--radius-md);transition:all .15s;}
+.btn-primary:hover{background:var(--ccx-teal-70);border-color:var(--ccx-teal-70);}
+</style>
+</head>
+<body>
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     PAGE 1 â€” TEMPLATE LIST
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<div id="page-list" class="page active">
+  <nav class="top-nav">
+    <div class="nav-left">
+      <div class="logo" onclick="toggleSideNavFromLogo(this)" style="cursor:pointer;" title="Toggle navigation"><svg width="28" height="36" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M26.409 15.3427C25.728 14.0286 24.7769 13.0126 23.5544 12.2973C22.3314 11.5821 20.9125 11.2257 19.2972 11.2257H15.6301C14.0147 11.2257 12.5964 11.5821 11.3746 12.2973C10.1516 13.0126 9.1995 14.0286 8.51949 15.3427C7.92135 16.4977 7.60211 17.8225 7.52947 19.2979H10.0804C10.1815 17.6643 10.6914 16.3218 11.6166 15.273C12.655 14.0966 14.0147 13.5087 15.6998 13.5087H19.2292C20.9125 13.5087 22.2745 14.0969 23.3124 15.273C24.3503 16.4503 24.8692 17.9952 24.8692 19.9099V27.3147C24.8692 29.2301 24.3503 30.776 23.3124 31.9517C22.2748 33.128 20.9125 33.7167 19.2292 33.7167H15.6649C13.981 33.7167 12.6246 33.128 11.5991 31.9517C10.6842 30.9045 10.18 29.5615 10.0802 27.9272H7.52947C7.60211 29.4024 7.92135 30.7272 8.51949 31.8824C9.1995 33.1973 10.1516 34.213 11.3746 34.9273C12.5964 35.6425 14.0036 35.9999 15.5956 35.9999H19.2972C20.89 35.9999 22.3027 35.6369 23.5362 34.9093C24.7711 34.1831 25.7278 33.1691 26.4088 31.8644C27.0893 30.5615 27.4296 29.0448 27.4296 27.3147V19.9099C27.4299 18.1799 27.0895 16.6575 26.409 15.3427ZM11.7995 24.7742C13.4149 24.7742 14.833 24.4181 16.055 23.7026C17.278 22.9873 18.2302 21.9713 18.9102 20.6572C19.5083 19.5025 19.8275 18.1774 19.9002 16.702H17.3492C17.2484 18.3356 16.7382 19.6781 15.8131 20.7269C14.7747 21.9033 13.4149 22.4912 11.7298 22.4912H8.20049C6.5171 22.4912 5.15513 21.9031 4.11725 20.7269C3.07938 19.5496 2.56044 18.0047 2.56044 16.09V8.68518C2.56044 6.76977 3.07938 5.22388 4.11725 4.04825C5.15489 2.8719 6.5171 2.28323 8.20049 2.28323H11.7648C13.4487 2.28323 14.8051 2.8719 15.8305 4.04825C16.7455 5.09536 17.2496 6.43863 17.3495 8.0727H19.9002C19.8275 6.59752 19.5085 5.27272 18.9104 4.1175C18.2304 2.8029 17.2783 1.78689 16.0553 1.07262C14.8335 0.357376 13.4263 0 11.8343 0H8.13271C6.53994 0 5.12719 0.362965 3.8935 1.0906C2.65859 1.81653 1.70186 2.83084 1.02087 4.13547C0.34037 5.43841 0 6.95514 0 8.68518V16.09C0 17.82 0.340613 19.3426 1.02087 20.6572C1.70186 21.9713 2.653 22.9873 3.87552 23.7026C5.09852 24.4178 6.51734 24.7742 8.13271 24.7742H11.7995Z" fill="white"/></svg></div>
+    </div>
+    <div style="display:flex;align-items:center;">
+      <span class="nav-title">Organization:</span>
+      <div class="context-container">
+        <span class="context-toggle" onclick="toggleContextDD(event,this)">
+          <span class="context-name">ACM Hospital</span>
+          <span class="material-icons">keyboard_arrow_down</span>
+        </span>
+        <div class="context-dropdown">
+          <div class="context-search">
+            <input type="text" placeholder="Search" oninput="filterFacilities(this)"/>
+            <span class="material-icons search-icon" onclick="clearContextSearch(this)">search</span>
+          </div>
+          <div class="context-list">
+            <div class="context-header">Organization</div>
+            <div class="context-item context-section-end selected" data-id="organizational" onclick="selectContext(this,'organizational','ACM Hospital')">ACM Hospital</div>
+            <div class="context-header">Facilities</div>
+            <div class="context-item" data-id="fac-1" onclick="selectContext(this,'fac-1','Cardiology Department')">Cardiology Department</div>
+            <div class="context-item" data-id="fac-2" onclick="selectContext(this,'fac-2','Neurology Department')">Neurology Department</div>
+            <div class="context-item" data-id="fac-3" onclick="selectContext(this,'fac-3','Medical-Surgical Department')">Medical-Surgical Department</div>
+            <div class="context-item" data-id="fac-4" onclick="selectContext(this,'fac-4','Pediatric Department')">Pediatric Department</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="top-nav-actions">
+          <div class="top-dropdown-wrap" onmouseenter="showTopDD(this)" onmouseleave="hideTopDD(this)">
+            <a href="javascript:void(0)" class="top-dd-trigger" onclick="toggleTopDD(event,this)"><span class="material-icons">settings</span> Settings</a>
+            <div class="top-dd-body">
+              <div class="top-dd-user"><span class="material-icons">account_circle</span> Admin User</div>
+              <a href="javascript:void(0)" class="top-dd-link">Settings</a>
+              <a href="javascript:void(0)" class="top-dd-link">Account</a>
+            </div>
+          </div>
+          <div class="top-dropdown-wrap" onmouseenter="showTopDD(this)" onmouseleave="hideTopDD(this)">
+            <a href="javascript:void(0)" class="top-dd-trigger" onclick="toggleTopDD(event,this)"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right:4px;vertical-align:middle;"><mask id="mask_support" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20"><rect width="20" height="20" fill="#D9D9D9"/></mask><g mask="url(#mask_support)"><path d="M9.99984 18.3332C8.84706 18.3332 7.76373 18.1144 6.74984 17.6769C5.73595 17.2394 4.854 16.6457 4.104 15.8957C3.354 15.1457 2.76025 14.2637 2.32275 13.2498C1.88525 12.2359 1.6665 11.1526 1.6665 9.99984C1.6665 8.84706 1.88525 7.76373 2.32275 6.74984C2.76025 5.73595 3.354 4.854 4.104 4.104C4.854 3.354 5.73595 2.76025 6.74984 2.32275C7.76373 1.88525 8.84706 1.6665 9.99984 1.6665C11.1526 1.6665 12.2359 1.88525 13.2498 2.32275C14.2637 2.76025 15.1457 3.354 15.8957 4.104C16.6457 4.854 17.2394 5.73595 17.6769 6.74984C18.1144 7.76373 18.3332 8.84706 18.3332 9.99984C18.3332 11.1526 18.1144 12.2359 17.6769 13.2498C17.2394 14.2637 16.6457 15.1457 15.8957 15.8957C15.1457 16.6457 14.2637 17.2394 13.2498 17.6769C12.2359 18.1144 11.1526 18.3332 9.99984 18.3332ZM7.58317 16.2082L8.58317 13.9165C7.99984 13.7082 7.49637 13.3853 7.07275 12.9478C6.64914 12.5103 6.31928 11.9998 6.08317 11.4165L3.7915 12.3748C4.11095 13.2637 4.604 14.0415 5.27067 14.7082C5.93734 15.3748 6.70817 15.8748 7.58317 16.2082ZM6.08317 8.58317C6.31928 7.99984 6.64914 7.48942 7.07275 7.05192C7.49637 6.61442 7.99984 6.2915 8.58317 6.08317L7.62484 3.7915C6.73595 4.12484 5.95817 4.62484 5.2915 5.2915C4.62484 5.95817 4.12484 6.73595 3.7915 7.62484L6.08317 8.58317ZM9.99984 12.4998C10.6943 12.4998 11.2846 12.2568 11.7707 11.7707C12.2568 11.2846 12.4998 10.6943 12.4998 9.99984C12.4998 9.30539 12.2568 8.71512 11.7707 8.229C11.2846 7.74289 10.6943 7.49984 9.99984 7.49984C9.30539 7.49984 8.71512 7.74289 8.229 8.229C7.74289 8.71512 7.49984 9.30539 7.49984 9.99984C7.49984 10.6943 7.74289 11.2846 8.229 11.7707C8.71512 12.2568 9.30539 12.4998 9.99984 12.4998ZM12.4165 16.2082C13.2915 15.8748 14.0589 15.3783 14.7186 14.7186C15.3783 14.0589 15.8748 13.2915 16.2082 12.4165L13.9165 11.4165C13.7082 11.9998 13.3887 12.5033 12.9582 12.9269C12.5276 13.3505 12.0276 13.6804 11.4582 13.9165L12.4165 16.2082ZM13.9165 8.5415L16.2082 7.58317C15.8748 6.70817 15.3783 5.94081 14.7186 5.28109C14.0589 4.62137 13.2915 4.12484 12.4165 3.7915L11.4582 6.12484C12.0276 6.33317 12.5207 6.64914 12.9373 7.07275C13.354 7.49637 13.6804 7.98595 13.9165 8.5415Z" fill="white"/></g></svg> Support</a>
+            <div class="top-dd-body">
+              <a href="https://support.cliniconex.com" target="_blank" class="top-dd-link">Support</a>
+              <a href="https://cliniconex.com/privacy-policy/" target="_blank" class="top-dd-link">Privacy Agreement</a>
+              <a href="https://cliniconex.com/support/help-center/" target="_blank" class="top-dd-link">Help Center</a>
+            </div>
+          </div>
+          <a href="javascript:void(0)" style="white-space:nowrap;"><span class="material-icons">exit_to_app</span> Logout</a>
+        </div>
+  </nav>
+  <div class="app-shell">
+    <aside class="side-nav" onmouseenter="openExpandedNav('nav1')" onmouseleave="closeExpandedNav('nav1')">
+      <a href="#" title="Automated Care"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 20C3.45 20 2.97917 19.8042 2.5875 19.4125C2.19583 19.0208 2 18.55 2 18V6C2 5.45 2.19583 4.97917 2.5875 4.5875C2.97917 4.19583 3.45 4 4 4H20C20.55 4 21.0208 4.19583 21.4125 4.5875C21.8042 4.97917 22 5.45 22 6V18C22 18.55 21.8042 19.0208 21.4125 19.4125C21.0208 19.8042 20.55 20 20 20H4ZM12 13L20 8V6L12 11L4 6V8L12 13Z" fill="white"/></svg></a>
+      <a href="#" title="Directory"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M7 9H17V7H7V9ZM5 21C4.45 21 3.97917 20.8042 3.5875 20.4125C3.19583 20.0208 3 19.55 3 19V5C3 4.45 3.19583 3.97917 3.5875 3.5875C3.97917 3.19583 4.45 3 5 3H19C19.55 3 20.0208 3.19583 20.4125 3.5875C20.8042 3.97917 21 4.45 21 5V11.45C20.6167 10.7 20.0667 10.1042 19.35 9.6625C18.6333 9.22083 17.85 9 17 9C16.25 9 15.55 9.175 14.9 9.525C14.25 9.875 13.7083 10.3667 13.275 11H7V13H12.525C12.4917 13.3333 12.4917 13.6667 12.525 14C12.5583 14.3333 12.6333 14.6667 12.75 15H7V17H10.925C10.6083 17.3667 10.375 17.7708 10.225 18.2125C10.075 18.6542 10 19.1167 10 19.6V21H5ZM12 21V19.6C12 19.2 12.1042 18.8292 12.3125 18.4875C12.5208 18.1458 12.8167 17.9 13.2 17.75C13.8 17.5 14.4208 17.3125 15.0625 17.1875C15.7042 17.0625 16.35 17 17 17C17.65 17 18.2958 17.0625 18.9375 17.1875C19.5792 17.3125 20.2 17.5 20.8 17.75C21.1833 17.9 21.4792 18.1458 21.6875 18.4875C21.8958 18.8292 22 19.2 22 19.6V21H12ZM17 16C16.3 16 15.7083 15.7583 15.225 15.275C14.7417 14.7917 14.5 14.2 14.5 13.5C14.5 12.8 14.7417 12.2083 15.225 11.725C15.7083 11.2417 16.3 11 17 11C17.7 11 18.2917 11.2417 18.775 11.725C19.2583 12.2083 19.5 12.8 19.5 13.5C19.5 14.2 19.2583 14.7917 18.775 15.275C18.2917 15.7583 17.7 16 17 16Z" fill="white"/></svg></a>
+      <a href="#" title="User Management"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M0 18V16.425C0 15.7083 0.366667 15.125 1.1 14.675C1.83333 14.225 2.8 14 4 14C4.21667 14 4.425 14.0042 4.625 14.0125C4.825 14.0208 5.01667 14.0417 5.2 14.075C4.96667 14.425 4.79167 14.7917 4.675 15.175C4.55833 15.5583 4.5 15.9583 4.5 16.375V18H0ZM6 18V16.375C6 15.8417 6.14583 15.3542 6.4375 14.9125C6.72917 14.4708 7.14167 14.0833 7.675 13.75C8.20833 13.4167 8.84583 13.1667 9.5875 13C10.3292 12.8333 11.1333 12.75 12 12.75C12.8833 12.75 13.6958 12.8333 14.4375 13C15.1792 13.1667 15.8167 13.4167 16.35 13.75C16.8833 14.0833 17.2917 14.4708 17.575 14.9125C17.8583 15.3542 18 15.8417 18 16.375V18H6ZM19.5 18V16.375C19.5 15.9417 19.4458 15.5333 19.3375 15.15C19.2292 14.7667 19.0667 14.4083 18.85 14.075C19.0333 14.0417 19.2208 14.0208 19.4125 14.0125C19.6042 14.0042 19.8 14 20 14C21.2 14 22.1667 14.2208 22.9 14.6625C23.6333 15.1042 24 15.6917 24 16.425V18H19.5ZM4 13C3.45 13 2.97917 12.8042 2.5875 12.4125C2.19583 12.0208 2 11.55 2 11C2 10.4333 2.19583 9.95833 2.5875 9.575C2.97917 9.19167 3.45 9 4 9C4.56667 9 5.04167 9.19167 5.425 9.575C5.80833 9.95833 6 10.4333 6 11C6 11.55 5.80833 12.0208 5.425 12.4125C5.04167 12.8042 4.56667 13 4 13ZM20 13C19.45 13 18.9792 12.8042 18.5875 12.4125C18.1958 12.0208 18 11.55 18 11C18 10.4333 18.1958 9.95833 18.5875 9.575C18.9792 9.19167 19.45 9 20 9C20.5667 9 21.0417 9.19167 21.425 9.575C21.8083 9.95833 22 10.4333 22 11C22 11.55 21.8083 12.0208 21.425 12.4125C21.0417 12.8042 20.5667 13 20 13ZM12 12C11.1667 12 10.4583 11.7083 9.875 11.125C9.29167 10.5417 9 9.83333 9 9C9 8.15 9.29167 7.4375 9.875 6.8625C10.4583 6.2875 11.1667 6 12 6C12.85 6 13.5625 6.2875 14.1375 6.8625C14.7125 7.4375 15 8.15 15 9C15 9.83333 14.7125 10.5417 14.1375 11.125C13.5625 11.7083 12.85 12 12 12Z" fill="white"/></svg></a>
+    </aside>
+    <!-- Expanded Nav Panel -->
+    <div class="expanded-nav" id="nav1" onmouseenter="openExpandedNav('nav1')" onmouseleave="closeExpandedNav('nav1')">
+      <div class="nav-section">
+        <div class="nav-section-header"><span class="material-icons">email</span> Automated Care</div>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M19 23L17.6 21.6L19.175 20H15V18H19.175L17.575 16.4L19 15L23 19L19 23ZM4 20C3.45 20 2.97917 19.8042 2.5875 19.4125C2.19583 19.0208 2 18.55 2 18V6C2 5.45 2.19583 4.97917 2.5875 4.5875C2.97917 4.19583 3.45 4 4 4H20C20.55 4 21.0208 4.19583 21.4125 4.5875C21.8042 4.97917 22 5.45 22 6V13.8C21.55 13.5333 21.0708 13.3333 20.5625 13.2C20.0542 13.0667 19.5333 13 19 13C17.3333 13 15.9167 13.5833 14.75 14.75C13.5833 15.9167 13 17.3333 13 19V20H4ZM12 13L20 8V6L12 11L4 6V8L12 13Z" fill="white"/></svg> Messages</a>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M10 14H14V12H10V14ZM10 11H18V9H10V11ZM10 8H18V6H10V8ZM8 18C7.45 18 6.97917 17.8042 6.5875 17.4125C6.19583 17.0208 6 16.55 6 16V4C6 3.45 6.19583 2.97917 6.5875 2.5875C6.97917 2.19583 7.45 2 8 2H20C20.55 2 21.0208 2.19583 21.4125 2.5875C21.8042 2.97917 22 3.45 22 4V16C22 16.55 21.8042 17.0208 21.4125 17.4125C21.0208 17.8042 20.55 18 20 18H8ZM4 22C3.45 22 2.97917 21.8042 2.5875 21.4125C2.19583 21.0208 2 20.55 2 20V6H4V20H18V22H4Z" fill="white"/></svg> Forms and Surveys</a>
+      </div>
+      <div class="nav-section-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-header">Reports</div>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M17.35 20L13.825 16.45L15.225 15.05L17.35 17.175L21.6 12.925L23 14.35L17.35 20ZM2 22V4C2 3.45 2.19583 2.97917 2.5875 2.5875C2.97917 2.19583 3.45 2 4 2H20C20.55 2 21.0208 2.19583 21.4125 2.5875C21.8042 2.97917 22 3.45 22 4V11H12V18H6L2 22Z" fill="white"/></svg> Submitted Forms</a>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M15.95 22L11.7 17.75L13.1 16.35L15.95 19.2L21.6 13.55L23 14.95L15.95 22ZM4 20C3.45 20 2.97917 19.8042 2.5875 19.4125C2.19583 19.0208 2 18.55 2 18V6C2 5.45 2.19583 4.97917 2.5875 4.5875C2.97917 4.19583 3.45 4 4 4H20C20.55 4 21.0208 4.19583 21.4125 4.5875C21.8042 4.97917 22 5.45 22 6V10.35L15.975 16.375L13.1 13.5L8.875 17.725L11.15 20H4ZM12 13L20 8V6L12 11L4 6V8L12 13Z" fill="white"/></svg> Sent Jobs</a>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M3 20V14L11 12L3 10V4L17.3 10H17C15.05 10 13.3958 10.6875 12.0375 12.0625C10.6792 13.4375 10 15.1 10 17.05L3 20ZM17 22C15.6167 22 14.4375 21.5125 13.4625 20.5375C12.4875 19.5625 12 18.3833 12 17C12 15.6167 12.4875 14.4375 13.4625 13.4625C14.4375 12.4875 15.6167 12 17 12C18.3833 12 19.5625 12.4875 20.5375 13.4625C21.5125 14.4375 22 15.6167 22 17C22 18.3833 21.5125 19.5625 20.5375 20.5375C19.5625 21.5125 18.3833 22 17 22ZM18.65 19.35L19.35 18.65L17.5 16.8V14H16.5V17.2L18.65 19.35Z" fill="white"/></svg> Scheduled Jobs</a>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M12 13L20 8V6L12 11L4 6V8L12 13ZM19 20C18.7167 20 18.4792 19.9042 18.2875 19.7125C18.0958 19.5208 18 19.2833 18 19V16C18 15.7167 18.0958 15.4792 18.2875 15.2875C18.4792 15.0958 18.7167 15 19 15V14C19 13.45 19.1958 12.9792 19.5875 12.5875C19.9792 12.1958 20.45 12 21 12C21.55 12 22.0208 12.1958 22.4125 12.5875C22.8042 12.9792 23 13.45 23 14V15C23.2833 15 23.5208 15.0958 23.7125 15.2875C23.9042 15.4792 24 15.7167 24 16V19C24 19.2833 23.9042 19.5208 23.7125 19.7125C23.5208 19.9042 23.2833 20 23 20H19ZM20 15H22V14C22 13.7167 21.9042 13.4792 21.7125 13.2875C21.5208 13.0958 21.2833 13 21 13C20.7167 13 20.4792 13.0958 20.2875 13.2875C20.0958 13.4792 20 13.7167 20 14V15ZM4 20C3.45 20 2.97917 19.8042 2.5875 19.4125C2.19583 19.0208 2 18.55 2 18V6C2 5.45 2.19583 4.97917 2.5875 4.5875C2.97917 4.19583 3.45 4 4 4H20C20.55 4 21.0208 4.19583 21.4125 4.5875C21.8042 4.97917 22 5.45 22 6V10H21C19.6167 10 18.4375 10.4875 17.4625 11.4625C16.4875 12.4375 16 13.6167 16 15V20H4Z" fill="white"/></svg> Moderated Jobs</a>
+      </div>
+      <div class="nav-section-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-header"><span class="material-icons">contact_page</span> Directory</div>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M2 21V3H12V7H22V21H2ZM4 19H6V17H4V19ZM4 15H6V13H4V15ZM4 11H6V9H4V11ZM4 7H6V5H4V7ZM8 19H10V17H8V19ZM8 15H10V13H8V15ZM8 11H10V9H8V11ZM8 7H10V5H8V7ZM12 19H20V9H12V11H14V13H12V15H14V17H12V19ZM16 13V11H18V13H16ZM16 17V15H18V17H16Z" fill="white"/></svg> Integrated Contacts</a>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M2 20V16H6V20H2ZM8 20V16H22V20H8ZM2 14V10H6V14H2ZM8 14V10H22V14H8ZM2 8V4H6V8H2ZM8 8V4H22V8H8Z" fill="white"/></svg> Saved Lists</a>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><span class="material-icons">playlist_add</span> Multi Saved Lists</a>
+      </div>
+      <div class="nav-section-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-header"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M0 18V16.425C0 15.7083 0.366667 15.125 1.1 14.675C1.83333 14.225 2.8 14 4 14C4.21667 14 4.425 14.0042 4.625 14.0125C4.825 14.0208 5.01667 14.0417 5.2 14.075C4.96667 14.425 4.79167 14.7917 4.675 15.175C4.55833 15.5583 4.5 15.9583 4.5 16.375V18H0ZM6 18V16.375C6 15.8417 6.14583 15.3542 6.4375 14.9125C6.72917 14.4708 7.14167 14.0833 7.675 13.75C8.20833 13.4167 8.84583 13.1667 9.5875 13C10.3292 12.8333 11.1333 12.75 12 12.75C12.8833 12.75 13.6958 12.8333 14.4375 13C15.1792 13.1667 15.8167 13.4167 16.35 13.75C16.8833 14.0833 17.2917 14.4708 17.575 14.9125C17.8583 15.3542 18 15.8417 18 16.375V18H6ZM19.5 18V16.375C19.5 15.9417 19.4458 15.5333 19.3375 15.15C19.2292 14.7667 19.0667 14.4083 18.85 14.075C19.0333 14.0417 19.2208 14.0208 19.4125 14.0125C19.6042 14.0042 19.8 14 20 14C21.2 14 22.1667 14.2208 22.9 14.6625C23.6333 15.1042 24 15.6917 24 16.425V18H19.5ZM4 13C3.45 13 2.97917 12.8042 2.5875 12.4125C2.19583 12.0208 2 11.55 2 11C2 10.4333 2.19583 9.95833 2.5875 9.575C2.97917 9.19167 3.45 9 4 9C4.56667 9 5.04167 9.19167 5.425 9.575C5.80833 9.95833 6 10.4333 6 11C6 11.55 5.80833 12.0208 5.425 12.4125C5.04167 12.8042 4.56667 13 4 13ZM20 13C19.45 13 18.9792 12.8042 18.5875 12.4125C18.1958 12.0208 18 11.55 18 11C18 10.4333 18.1958 9.95833 18.5875 9.575C18.9792 9.19167 19.45 9 20 9C20.5667 9 21.0417 9.19167 21.425 9.575C21.8083 9.95833 22 10.4333 22 11C22 11.55 21.8083 12.0208 21.425 12.4125C21.0417 12.8042 20.5667 13 20 13ZM12 12C11.1667 12 10.4583 11.7083 9.875 11.125C9.29167 10.5417 9 9.83333 9 9C9 8.15 9.29167 7.4375 9.875 6.8625C10.4583 6.2875 11.1667 6 12 6C12.85 6 13.5625 6.2875 14.1375 6.8625C14.7125 7.4375 15 8.15 15 9C15 9.83333 14.7125 10.5417 14.1375 11.125C13.5625 11.7083 12.85 12 12 12Z" fill="white"/></svg> User Management</div>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M1 20V17.2C1 16.6333 1.14583 16.1125 1.4375 15.6375C1.72917 15.1625 2.11667 14.8 2.6 14.55C3.63333 14.0333 4.68333 13.6458 5.75 13.3875C6.81667 13.1292 7.9 13 9 13C10.1 13 11.1833 13.1292 12.25 13.3875C13.3167 13.6458 14.3667 14.0333 15.4 14.55C15.8833 14.8 16.2708 15.1625 16.5625 15.6375C16.8542 16.1125 17 16.6333 17 17.2V20H1ZM19 20V17C19 16.2667 18.7958 15.5625 18.3875 14.8875C17.9792 14.2125 17.4 13.6333 16.65 13.15C17.5 13.25 18.3 13.4208 19.05 13.6625C19.8 13.9042 20.5 14.2 21.15 14.55C21.75 14.8833 22.2083 15.2542 22.525 15.6625C22.8417 16.0708 23 16.5167 23 17V20H19ZM9 12C7.9 12 6.95833 11.6083 6.175 10.825C5.39167 10.0417 5 9.1 5 8C5 6.9 5.39167 5.95833 6.175 5.175C6.95833 4.39167 7.9 4 9 4C10.1 4 11.0417 4.39167 11.825 5.175C12.6083 5.95833 13 6.9 13 8C13 9.1 12.6083 10.0417 11.825 10.825C11.0417 11.6083 10.1 12 9 12ZM19 8C19 9.1 18.6083 10.0417 17.825 10.825C17.0417 11.6083 16.1 12 15 12C14.8167 12 14.5833 11.9792 14.3 11.9375C14.0167 11.8958 13.7833 11.85 13.6 11.8C14.05 11.2667 14.3958 10.675 14.6375 10.025C14.8792 9.375 15 8.7 15 8C15 7.3 14.8792 6.625 14.6375 5.975C14.3958 5.325 14.05 4.73333 13.6 4.2C13.8333 4.11667 14.0667 4.0625 14.3 4.0375C14.5333 4.0125 14.7667 4 15 4C16.1 4 17.0417 4.39167 17.825 5.175C18.6083 5.95833 19 6.9 19 8Z" fill="white"/></svg> All Users</a>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M16 21L15.7 19.5C15.5 19.4167 15.3125 19.3292 15.1375 19.2375C14.9625 19.1458 14.7833 19.0333 14.6 18.9L13.15 19.35L12.15 17.65L13.3 16.65C13.2667 16.4167 13.25 16.2 13.25 16C13.25 15.8 13.2667 15.5833 13.3 15.35L12.15 14.35L13.15 12.65L14.6 13.1C14.7833 12.9667 14.9625 12.8542 15.1375 12.7625C15.3125 12.6708 15.5 12.5833 15.7 12.5L16 11H18L18.3 12.5C18.5 12.5833 18.6875 12.675 18.8625 12.775C19.0375 12.875 19.2167 13 19.4 13.15L20.85 12.65L21.85 14.4L20.7 15.4C20.7333 15.6 20.75 15.8083 20.75 16.025C20.75 16.2417 20.7333 16.45 20.7 16.65L21.85 17.65L20.85 19.35L19.4 18.9C19.2167 19.0333 19.0375 19.1458 18.8625 19.2375C18.6875 19.3292 18.5 19.4167 18.3 19.5L18 21H16ZM2 20V17.2C2 16.65 2.14167 16.1333 2.425 15.65C2.70833 15.1667 3.1 14.8 3.6 14.55C4.45 14.1167 5.40833 13.75 6.475 13.45C7.54167 13.15 8.71667 13 10 13H10.35C10.45 13 10.55 13.0167 10.65 13.05C10.1667 14.25 9.96667 15.4417 10.05 16.625C10.1333 17.8083 10.5333 18.9333 11.25 20H2ZM17 18C17.55 18 18.0208 17.8042 18.4125 17.4125C18.8042 17.0208 19 16.55 19 16C19 15.45 18.8042 14.9792 18.4125 14.5875C18.0208 14.1958 17.55 14 17 14C16.45 14 15.9792 14.1958 15.5875 14.5875C15.1958 14.9792 15 15.45 15 16C15 16.55 15.1958 17.0208 15.5875 17.4125C15.9792 17.8042 16.45 18 17 18ZM10 12C8.9 12 7.95833 11.6083 7.175 10.825C6.39167 10.0417 6 9.1 6 8C6 6.9 6.39167 5.95833 7.175 5.175C7.95833 4.39167 8.9 4 10 4C11.1 4 12.0417 4.39167 12.825 5.175C13.6083 5.95833 14 6.9 14 8C14 9.1 13.6083 10.0417 12.825 10.825C12.0417 11.6083 11.1 12 10 12Z" fill="white"/></svg> Privileges</a>
+      </div>
+      <div class="nav-section-divider"></div>
+      <div class="nav-section">
+
+      </div>
+    </div>
+    <main class="main-content">
+      <div class="search-wrapper">
+        <input type="text" placeholder="search"/>
+        <span class="material-icons">search</span>
+      </div>
+      <div class="category-list">
+
+        <div>
+          <div class="category-row" onclick="toggleCat(this)">
+            <span class="cat-name">Billing (3)</span>
+            <span class="material-icons arrow-icon">arrow_right</span>
+            <div class="icon-more"><span class="material-icons">more_vert</span></div>
+          </div>
+          <div class="template-items">
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Invoice Due</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Invoice | 15 Days Past Due</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Invoice | 30 Days Overdue</span></div><span class="material-icons">more_vert</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="category-row" onclick="toggleCat(this)">
+            <span class="cat-name">Clinic Events and Updates (4)</span>
+            <span class="material-icons arrow-icon">arrow_right</span>
+            <div class="icon-more"><span class="material-icons">more_vert</span></div>
+          </div>
+          <div class="template-items">
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Accepting New Patients</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>CLINICNAME Now Open on Weekends</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Feedback Survey</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Poor Air Quality Alert</span></div><span class="material-icons">more_vert</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="category-row" onclick="toggleCat(this)">
+            <span class="cat-name">Misc. (3)</span>
+            <span class="material-icons arrow-icon">arrow_right</span>
+            <div class="icon-more"><span class="material-icons">more_vert</span></div>
+          </div>
+          <div class="template-items">
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Beauty's test</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Patient Intake Form</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Rating Workflow Testing</span></div><span class="material-icons">more_vert</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="category-row" onclick="toggleCat(this)">
+            <span class="cat-name">Patient Management (13)</span>
+            <span class="material-icons arrow-icon">arrow_right</span>
+            <div class="icon-more"><span class="material-icons">more_vert</span></div>
+          </div>
+          <div class="template-items">
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Annual Check-up</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Appointment Reminder</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Billing | Invoice 15 Days Past Due</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Billing | Invoice 30 Days Overdue</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Billing | Invoice Due</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Early Arrival Reminder - Specific Instructions</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Eyewear Notification</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Follow-Up Appointment</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Medication Reminder</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Patient Referral Program</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Pre-Procedure Instructions - Medication Adjustments</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Pre-Procedure Instructions - Dietary Restrictions</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Update on Waitlist Status</span></div><span class="material-icons">more_vert</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="category-row" onclick="toggleCat(this)">
+            <span class="cat-name">Policy Changes (5)</span>
+            <span class="material-icons arrow-icon">arrow_right</span>
+            <div class="icon-more"><span class="material-icons">more_vert</span></div>
+          </div>
+          <div class="template-items">
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>3-Month Diabetes Check-up</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>New Hours</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Regulatory Changes</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Updates to Clinic Policies</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Updates to Clinic Procedures</span></div><span class="material-icons">more_vert</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="category-row" onclick="toggleCat(this)">
+            <span class="cat-name">Preventative Care (8)</span>
+            <span class="material-icons arrow-icon">arrow_right</span>
+            <div class="icon-more"><span class="material-icons">more_vert</span></div>
+          </div>
+          <div class="template-items">
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Annual Check-up</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Check In | Blood Pressure</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Check In | Blood Sugar</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Check In | CHF</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Check In | COPD</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Check-in | Cholesterol</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Mammogram Reminder</span></div><span class="material-icons">more_vert</span></div>
+            <div class="template-item"><div class="item-badges"><span class="badge-shared">Shared</span><span class="material-icons badge-lock">lock</span><span>Vaccine Check-up</span></div><span class="material-icons">more_vert</span></div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+
+  <!-- FABs -->
+  <div class="fab-group">
+    <button class="fab" data-tooltip="Template Library"><span class="material-icons">content_copy</span></button>
+    <button class="fab" data-tooltip="Create Category"><span class="material-icons">create_new_folder</span></button>
+    <button class="fab" data-tooltip="Create New Template" onclick="goTo('page-create')"><span class="material-icons">add</span></button>
+  </div>
+</div><!-- /page-list -->
+
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     PAGE 2 â€” CREATE A MESSAGE
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<div id="page-create" class="page">
+  <nav class="top-nav">
+    <div class="nav-left">
+      <div class="logo" onclick="toggleSideNavFromLogo(this)" style="cursor:pointer;" title="Toggle navigation"><svg width="28" height="36" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M26.409 15.3427C25.728 14.0286 24.7769 13.0126 23.5544 12.2973C22.3314 11.5821 20.9125 11.2257 19.2972 11.2257H15.6301C14.0147 11.2257 12.5964 11.5821 11.3746 12.2973C10.1516 13.0126 9.1995 14.0286 8.51949 15.3427C7.92135 16.4977 7.60211 17.8225 7.52947 19.2979H10.0804C10.1815 17.6643 10.6914 16.3218 11.6166 15.273C12.655 14.0966 14.0147 13.5087 15.6998 13.5087H19.2292C20.9125 13.5087 22.2745 14.0969 23.3124 15.273C24.3503 16.4503 24.8692 17.9952 24.8692 19.9099V27.3147C24.8692 29.2301 24.3503 30.776 23.3124 31.9517C22.2748 33.128 20.9125 33.7167 19.2292 33.7167H15.6649C13.981 33.7167 12.6246 33.128 11.5991 31.9517C10.6842 30.9045 10.18 29.5615 10.0802 27.9272H7.52947C7.60211 29.4024 7.92135 30.7272 8.51949 31.8824C9.1995 33.1973 10.1516 34.213 11.3746 34.9273C12.5964 35.6425 14.0036 35.9999 15.5956 35.9999H19.2972C20.89 35.9999 22.3027 35.6369 23.5362 34.9093C24.7711 34.1831 25.7278 33.1691 26.4088 31.8644C27.0893 30.5615 27.4296 29.0448 27.4296 27.3147V19.9099C27.4299 18.1799 27.0895 16.6575 26.409 15.3427ZM11.7995 24.7742C13.4149 24.7742 14.833 24.4181 16.055 23.7026C17.278 22.9873 18.2302 21.9713 18.9102 20.6572C19.5083 19.5025 19.8275 18.1774 19.9002 16.702H17.3492C17.2484 18.3356 16.7382 19.6781 15.8131 20.7269C14.7747 21.9033 13.4149 22.4912 11.7298 22.4912H8.20049C6.5171 22.4912 5.15513 21.9031 4.11725 20.7269C3.07938 19.5496 2.56044 18.0047 2.56044 16.09V8.68518C2.56044 6.76977 3.07938 5.22388 4.11725 4.04825C5.15489 2.8719 6.5171 2.28323 8.20049 2.28323H11.7648C13.4487 2.28323 14.8051 2.8719 15.8305 4.04825C16.7455 5.09536 17.2496 6.43863 17.3495 8.0727H19.9002C19.8275 6.59752 19.5085 5.27272 18.9104 4.1175C18.2304 2.8029 17.2783 1.78689 16.0553 1.07262C14.8335 0.357376 13.4263 0 11.8343 0H8.13271C6.53994 0 5.12719 0.362965 3.8935 1.0906C2.65859 1.81653 1.70186 2.83084 1.02087 4.13547C0.34037 5.43841 0 6.95514 0 8.68518V16.09C0 17.82 0.340613 19.3426 1.02087 20.6572C1.70186 21.9713 2.653 22.9873 3.87552 23.7026C5.09852 24.4178 6.51734 24.7742 8.13271 24.7742H11.7995Z" fill="white"/></svg></div>
+    </div>
+    <div style="display:flex;align-items:center;">
+      <span class="nav-title">Organization:</span>
+      <div class="context-container">
+        <span class="context-toggle" onclick="toggleContextDD(event,this)">
+          <span class="context-name">ACM Hospital</span>
+          <span class="material-icons">keyboard_arrow_down</span>
+        </span>
+        <div class="context-dropdown">
+          <div class="context-search">
+            <input type="text" placeholder="Search" oninput="filterFacilities(this)"/>
+            <span class="material-icons search-icon" onclick="clearContextSearch(this)">search</span>
+          </div>
+          <div class="context-list">
+            <div class="context-header">Organization</div>
+            <div class="context-item context-section-end selected" data-id="organizational" onclick="selectContext(this,'organizational','ACM Hospital')">ACM Hospital</div>
+            <div class="context-header">Facilities</div>
+            <div class="context-item" data-id="fac-1" onclick="selectContext(this,'fac-1','Cardiology Department')">Cardiology Department</div>
+            <div class="context-item" data-id="fac-2" onclick="selectContext(this,'fac-2','Neurology Department')">Neurology Department</div>
+            <div class="context-item" data-id="fac-3" onclick="selectContext(this,'fac-3','Medical-Surgical Department')">Medical-Surgical Department</div>
+            <div class="context-item" data-id="fac-4" onclick="selectContext(this,'fac-4','Pediatric Department')">Pediatric Department</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="top-nav-actions">
+          <div class="top-dropdown-wrap" onmouseenter="showTopDD(this)" onmouseleave="hideTopDD(this)">
+            <a href="javascript:void(0)" class="top-dd-trigger" onclick="toggleTopDD(event,this)"><span class="material-icons">settings</span> Settings</a>
+            <div class="top-dd-body">
+              <div class="top-dd-user"><span class="material-icons">account_circle</span> Admin User</div>
+              <a href="javascript:void(0)" class="top-dd-link">Settings</a>
+              <a href="javascript:void(0)" class="top-dd-link">Account</a>
+            </div>
+          </div>
+          <div class="top-dropdown-wrap" onmouseenter="showTopDD(this)" onmouseleave="hideTopDD(this)">
+            <a href="javascript:void(0)" class="top-dd-trigger" onclick="toggleTopDD(event,this)"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right:4px;vertical-align:middle;"><mask id="mask_support" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20"><rect width="20" height="20" fill="#D9D9D9"/></mask><g mask="url(#mask_support)"><path d="M9.99984 18.3332C8.84706 18.3332 7.76373 18.1144 6.74984 17.6769C5.73595 17.2394 4.854 16.6457 4.104 15.8957C3.354 15.1457 2.76025 14.2637 2.32275 13.2498C1.88525 12.2359 1.6665 11.1526 1.6665 9.99984C1.6665 8.84706 1.88525 7.76373 2.32275 6.74984C2.76025 5.73595 3.354 4.854 4.104 4.104C4.854 3.354 5.73595 2.76025 6.74984 2.32275C7.76373 1.88525 8.84706 1.6665 9.99984 1.6665C11.1526 1.6665 12.2359 1.88525 13.2498 2.32275C14.2637 2.76025 15.1457 3.354 15.8957 4.104C16.6457 4.854 17.2394 5.73595 17.6769 6.74984C18.1144 7.76373 18.3332 8.84706 18.3332 9.99984C18.3332 11.1526 18.1144 12.2359 17.6769 13.2498C17.2394 14.2637 16.6457 15.1457 15.8957 15.8957C15.1457 16.6457 14.2637 17.2394 13.2498 17.6769C12.2359 18.1144 11.1526 18.3332 9.99984 18.3332ZM7.58317 16.2082L8.58317 13.9165C7.99984 13.7082 7.49637 13.3853 7.07275 12.9478C6.64914 12.5103 6.31928 11.9998 6.08317 11.4165L3.7915 12.3748C4.11095 13.2637 4.604 14.0415 5.27067 14.7082C5.93734 15.3748 6.70817 15.8748 7.58317 16.2082ZM6.08317 8.58317C6.31928 7.99984 6.64914 7.48942 7.07275 7.05192C7.49637 6.61442 7.99984 6.2915 8.58317 6.08317L7.62484 3.7915C6.73595 4.12484 5.95817 4.62484 5.2915 5.2915C4.62484 5.95817 4.12484 6.73595 3.7915 7.62484L6.08317 8.58317ZM9.99984 12.4998C10.6943 12.4998 11.2846 12.2568 11.7707 11.7707C12.2568 11.2846 12.4998 10.6943 12.4998 9.99984C12.4998 9.30539 12.2568 8.71512 11.7707 8.229C11.2846 7.74289 10.6943 7.49984 9.99984 7.49984C9.30539 7.49984 8.71512 7.74289 8.229 8.229C7.74289 8.71512 7.49984 9.30539 7.49984 9.99984C7.49984 10.6943 7.74289 11.2846 8.229 11.7707C8.71512 12.2568 9.30539 12.4998 9.99984 12.4998ZM12.4165 16.2082C13.2915 15.8748 14.0589 15.3783 14.7186 14.7186C15.3783 14.0589 15.8748 13.2915 16.2082 12.4165L13.9165 11.4165C13.7082 11.9998 13.3887 12.5033 12.9582 12.9269C12.5276 13.3505 12.0276 13.6804 11.4582 13.9165L12.4165 16.2082ZM13.9165 8.5415L16.2082 7.58317C15.8748 6.70817 15.3783 5.94081 14.7186 5.28109C14.0589 4.62137 13.2915 4.12484 12.4165 3.7915L11.4582 6.12484C12.0276 6.33317 12.5207 6.64914 12.9373 7.07275C13.354 7.49637 13.6804 7.98595 13.9165 8.5415Z" fill="white"/></g></svg> Support</a>
+            <div class="top-dd-body">
+              <a href="https://support.cliniconex.com" target="_blank" class="top-dd-link">Support</a>
+              <a href="https://cliniconex.com/privacy-policy/" target="_blank" class="top-dd-link">Privacy Agreement</a>
+              <a href="https://cliniconex.com/support/help-center/" target="_blank" class="top-dd-link">Help Center</a>
+            </div>
+          </div>
+          <a href="javascript:void(0)" style="white-space:nowrap;"><span class="material-icons">exit_to_app</span> Logout</a>
+        </div>
+  </nav>
+  <div class="app-shell">
+    <aside class="side-nav" onmouseenter="openExpandedNav('nav2')" onmouseleave="closeExpandedNav('nav2')">
+      <a href="#" title="Automated Care"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 20C3.45 20 2.97917 19.8042 2.5875 19.4125C2.19583 19.0208 2 18.55 2 18V6C2 5.45 2.19583 4.97917 2.5875 4.5875C2.97917 4.19583 3.45 4 4 4H20C20.55 4 21.0208 4.19583 21.4125 4.5875C21.8042 4.97917 22 5.45 22 6V18C22 18.55 21.8042 19.0208 21.4125 19.4125C21.0208 19.8042 20.55 20 20 20H4ZM12 13L20 8V6L12 11L4 6V8L12 13Z" fill="white"/></svg></a>
+      <a href="#" title="Directory"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M7 9H17V7H7V9ZM5 21C4.45 21 3.97917 20.8042 3.5875 20.4125C3.19583 20.0208 3 19.55 3 19V5C3 4.45 3.19583 3.97917 3.5875 3.5875C3.97917 3.19583 4.45 3 5 3H19C19.55 3 20.0208 3.19583 20.4125 3.5875C20.8042 3.97917 21 4.45 21 5V11.45C20.6167 10.7 20.0667 10.1042 19.35 9.6625C18.6333 9.22083 17.85 9 17 9C16.25 9 15.55 9.175 14.9 9.525C14.25 9.875 13.7083 10.3667 13.275 11H7V13H12.525C12.4917 13.3333 12.4917 13.6667 12.525 14C12.5583 14.3333 12.6333 14.6667 12.75 15H7V17H10.925C10.6083 17.3667 10.375 17.7708 10.225 18.2125C10.075 18.6542 10 19.1167 10 19.6V21H5ZM12 21V19.6C12 19.2 12.1042 18.8292 12.3125 18.4875C12.5208 18.1458 12.8167 17.9 13.2 17.75C13.8 17.5 14.4208 17.3125 15.0625 17.1875C15.7042 17.0625 16.35 17 17 17C17.65 17 18.2958 17.0625 18.9375 17.1875C19.5792 17.3125 20.2 17.5 20.8 17.75C21.1833 17.9 21.4792 18.1458 21.6875 18.4875C21.8958 18.8292 22 19.2 22 19.6V21H12ZM17 16C16.3 16 15.7083 15.7583 15.225 15.275C14.7417 14.7917 14.5 14.2 14.5 13.5C14.5 12.8 14.7417 12.2083 15.225 11.725C15.7083 11.2417 16.3 11 17 11C17.7 11 18.2917 11.2417 18.775 11.725C19.2583 12.2083 19.5 12.8 19.5 13.5C19.5 14.2 19.2583 14.7917 18.775 15.275C18.2917 15.7583 17.7 16 17 16Z" fill="white"/></svg></a>
+      <a href="#" title="User Management"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M0 18V16.425C0 15.7083 0.366667 15.125 1.1 14.675C1.83333 14.225 2.8 14 4 14C4.21667 14 4.425 14.0042 4.625 14.0125C4.825 14.0208 5.01667 14.0417 5.2 14.075C4.96667 14.425 4.79167 14.7917 4.675 15.175C4.55833 15.5583 4.5 15.9583 4.5 16.375V18H0ZM6 18V16.375C6 15.8417 6.14583 15.3542 6.4375 14.9125C6.72917 14.4708 7.14167 14.0833 7.675 13.75C8.20833 13.4167 8.84583 13.1667 9.5875 13C10.3292 12.8333 11.1333 12.75 12 12.75C12.8833 12.75 13.6958 12.8333 14.4375 13C15.1792 13.1667 15.8167 13.4167 16.35 13.75C16.8833 14.0833 17.2917 14.4708 17.575 14.9125C17.8583 15.3542 18 15.8417 18 16.375V18H6ZM19.5 18V16.375C19.5 15.9417 19.4458 15.5333 19.3375 15.15C19.2292 14.7667 19.0667 14.4083 18.85 14.075C19.0333 14.0417 19.2208 14.0208 19.4125 14.0125C19.6042 14.0042 19.8 14 20 14C21.2 14 22.1667 14.2208 22.9 14.6625C23.6333 15.1042 24 15.6917 24 16.425V18H19.5ZM4 13C3.45 13 2.97917 12.8042 2.5875 12.4125C2.19583 12.0208 2 11.55 2 11C2 10.4333 2.19583 9.95833 2.5875 9.575C2.97917 9.19167 3.45 9 4 9C4.56667 9 5.04167 9.19167 5.425 9.575C5.80833 9.95833 6 10.4333 6 11C6 11.55 5.80833 12.0208 5.425 12.4125C5.04167 12.8042 4.56667 13 4 13ZM20 13C19.45 13 18.9792 12.8042 18.5875 12.4125C18.1958 12.0208 18 11.55 18 11C18 10.4333 18.1958 9.95833 18.5875 9.575C18.9792 9.19167 19.45 9 20 9C20.5667 9 21.0417 9.19167 21.425 9.575C21.8083 9.95833 22 10.4333 22 11C22 11.55 21.8083 12.0208 21.425 12.4125C21.0417 12.8042 20.5667 13 20 13ZM12 12C11.1667 12 10.4583 11.7083 9.875 11.125C9.29167 10.5417 9 9.83333 9 9C9 8.15 9.29167 7.4375 9.875 6.8625C10.4583 6.2875 11.1667 6 12 6C12.85 6 13.5625 6.2875 14.1375 6.8625C14.7125 7.4375 15 8.15 15 9C15 9.83333 14.7125 10.5417 14.1375 11.125C13.5625 11.7083 12.85 12 12 12Z" fill="white"/></svg></a>
+    </aside>
+    <!-- Expanded Nav Panel -->
+    <div class="expanded-nav" id="nav2" onmouseenter="openExpandedNav('nav2')" onmouseleave="closeExpandedNav('nav2')">
+      <div class="nav-section">
+        <div class="nav-section-header"><span class="material-icons">email</span> Automated Care</div>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M19 23L17.6 21.6L19.175 20H15V18H19.175L17.575 16.4L19 15L23 19L19 23ZM4 20C3.45 20 2.97917 19.8042 2.5875 19.4125C2.19583 19.0208 2 18.55 2 18V6C2 5.45 2.19583 4.97917 2.5875 4.5875C2.97917 4.19583 3.45 4 4 4H20C20.55 4 21.0208 4.19583 21.4125 4.5875C21.8042 4.97917 22 5.45 22 6V13.8C21.55 13.5333 21.0708 13.3333 20.5625 13.2C20.0542 13.0667 19.5333 13 19 13C17.3333 13 15.9167 13.5833 14.75 14.75C13.5833 15.9167 13 17.3333 13 19V20H4ZM12 13L20 8V6L12 11L4 6V8L12 13Z" fill="white"/></svg> Messages</a>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M10 14H14V12H10V14ZM10 11H18V9H10V11ZM10 8H18V6H10V8ZM8 18C7.45 18 6.97917 17.8042 6.5875 17.4125C6.19583 17.0208 6 16.55 6 16V4C6 3.45 6.19583 2.97917 6.5875 2.5875C6.97917 2.19583 7.45 2 8 2H20C20.55 2 21.0208 2.19583 21.4125 2.5875C21.8042 2.97917 22 3.45 22 4V16C22 16.55 21.8042 17.0208 21.4125 17.4125C21.0208 17.8042 20.55 18 20 18H8ZM4 22C3.45 22 2.97917 21.8042 2.5875 21.4125C2.19583 21.0208 2 20.55 2 20V6H4V20H18V22H4Z" fill="white"/></svg> Forms and Surveys</a>
+      </div>
+      <div class="nav-section-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-header">Reports</div>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M17.35 20L13.825 16.45L15.225 15.05L17.35 17.175L21.6 12.925L23 14.35L17.35 20ZM2 22V4C2 3.45 2.19583 2.97917 2.5875 2.5875C2.97917 2.19583 3.45 2 4 2H20C20.55 2 21.0208 2.19583 21.4125 2.5875C21.8042 2.97917 22 3.45 22 4V11H12V18H6L2 22Z" fill="white"/></svg> Submitted Forms</a>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M15.95 22L11.7 17.75L13.1 16.35L15.95 19.2L21.6 13.55L23 14.95L15.95 22ZM4 20C3.45 20 2.97917 19.8042 2.5875 19.4125C2.19583 19.0208 2 18.55 2 18V6C2 5.45 2.19583 4.97917 2.5875 4.5875C2.97917 4.19583 3.45 4 4 4H20C20.55 4 21.0208 4.19583 21.4125 4.5875C21.8042 4.97917 22 5.45 22 6V10.35L15.975 16.375L13.1 13.5L8.875 17.725L11.15 20H4ZM12 13L20 8V6L12 11L4 6V8L12 13Z" fill="white"/></svg> Sent Jobs</a>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M3 20V14L11 12L3 10V4L17.3 10H17C15.05 10 13.3958 10.6875 12.0375 12.0625C10.6792 13.4375 10 15.1 10 17.05L3 20ZM17 22C15.6167 22 14.4375 21.5125 13.4625 20.5375C12.4875 19.5625 12 18.3833 12 17C12 15.6167 12.4875 14.4375 13.4625 13.4625C14.4375 12.4875 15.6167 12 17 12C18.3833 12 19.5625 12.4875 20.5375 13.4625C21.5125 14.4375 22 15.6167 22 17C22 18.3833 21.5125 19.5625 20.5375 20.5375C19.5625 21.5125 18.3833 22 17 22ZM18.65 19.35L19.35 18.65L17.5 16.8V14H16.5V17.2L18.65 19.35Z" fill="white"/></svg> Scheduled Jobs</a>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M12 13L20 8V6L12 11L4 6V8L12 13ZM19 20C18.7167 20 18.4792 19.9042 18.2875 19.7125C18.0958 19.5208 18 19.2833 18 19V16C18 15.7167 18.0958 15.4792 18.2875 15.2875C18.4792 15.0958 18.7167 15 19 15V14C19 13.45 19.1958 12.9792 19.5875 12.5875C19.9792 12.1958 20.45 12 21 12C21.55 12 22.0208 12.1958 22.4125 12.5875C22.8042 12.9792 23 13.45 23 14V15C23.2833 15 23.5208 15.0958 23.7125 15.2875C23.9042 15.4792 24 15.7167 24 16V19C24 19.2833 23.9042 19.5208 23.7125 19.7125C23.5208 19.9042 23.2833 20 23 20H19ZM20 15H22V14C22 13.7167 21.9042 13.4792 21.7125 13.2875C21.5208 13.0958 21.2833 13 21 13C20.7167 13 20.4792 13.0958 20.2875 13.2875C20.0958 13.4792 20 13.7167 20 14V15ZM4 20C3.45 20 2.97917 19.8042 2.5875 19.4125C2.19583 19.0208 2 18.55 2 18V6C2 5.45 2.19583 4.97917 2.5875 4.5875C2.97917 4.19583 3.45 4 4 4H20C20.55 4 21.0208 4.19583 21.4125 4.5875C21.8042 4.97917 22 5.45 22 6V10H21C19.6167 10 18.4375 10.4875 17.4625 11.4625C16.4875 12.4375 16 13.6167 16 15V20H4Z" fill="white"/></svg> Moderated Jobs</a>
+      </div>
+      <div class="nav-section-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-header"><span class="material-icons">contact_page</span> Directory</div>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M2 21V3H12V7H22V21H2ZM4 19H6V17H4V19ZM4 15H6V13H4V15ZM4 11H6V9H4V11ZM4 7H6V5H4V7ZM8 19H10V17H8V19ZM8 15H10V13H8V15ZM8 11H10V9H8V11ZM8 7H10V5H8V7ZM12 19H20V9H12V11H14V13H12V15H14V17H12V19ZM16 13V11H18V13H16ZM16 17V15H18V17H16Z" fill="white"/></svg> Integrated Contacts</a>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M2 20V16H6V20H2ZM8 20V16H22V20H8ZM2 14V10H6V14H2ZM8 14V10H22V14H8ZM2 8V4H6V8H2ZM8 8V4H22V8H8Z" fill="white"/></svg> Saved Lists</a>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><span class="material-icons">playlist_add</span> Multi Saved Lists</a>
+      </div>
+      <div class="nav-section-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-header"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M0 18V16.425C0 15.7083 0.366667 15.125 1.1 14.675C1.83333 14.225 2.8 14 4 14C4.21667 14 4.425 14.0042 4.625 14.0125C4.825 14.0208 5.01667 14.0417 5.2 14.075C4.96667 14.425 4.79167 14.7917 4.675 15.175C4.55833 15.5583 4.5 15.9583 4.5 16.375V18H0ZM6 18V16.375C6 15.8417 6.14583 15.3542 6.4375 14.9125C6.72917 14.4708 7.14167 14.0833 7.675 13.75C8.20833 13.4167 8.84583 13.1667 9.5875 13C10.3292 12.8333 11.1333 12.75 12 12.75C12.8833 12.75 13.6958 12.8333 14.4375 13C15.1792 13.1667 15.8167 13.4167 16.35 13.75C16.8833 14.0833 17.2917 14.4708 17.575 14.9125C17.8583 15.3542 18 15.8417 18 16.375V18H6ZM19.5 18V16.375C19.5 15.9417 19.4458 15.5333 19.3375 15.15C19.2292 14.7667 19.0667 14.4083 18.85 14.075C19.0333 14.0417 19.2208 14.0208 19.4125 14.0125C19.6042 14.0042 19.8 14 20 14C21.2 14 22.1667 14.2208 22.9 14.6625C23.6333 15.1042 24 15.6917 24 16.425V18H19.5ZM4 13C3.45 13 2.97917 12.8042 2.5875 12.4125C2.19583 12.0208 2 11.55 2 11C2 10.4333 2.19583 9.95833 2.5875 9.575C2.97917 9.19167 3.45 9 4 9C4.56667 9 5.04167 9.19167 5.425 9.575C5.80833 9.95833 6 10.4333 6 11C6 11.55 5.80833 12.0208 5.425 12.4125C5.04167 12.8042 4.56667 13 4 13ZM20 13C19.45 13 18.9792 12.8042 18.5875 12.4125C18.1958 12.0208 18 11.55 18 11C18 10.4333 18.1958 9.95833 18.5875 9.575C18.9792 9.19167 19.45 9 20 9C20.5667 9 21.0417 9.19167 21.425 9.575C21.8083 9.95833 22 10.4333 22 11C22 11.55 21.8083 12.0208 21.425 12.4125C21.0417 12.8042 20.5667 13 20 13ZM12 12C11.1667 12 10.4583 11.7083 9.875 11.125C9.29167 10.5417 9 9.83333 9 9C9 8.15 9.29167 7.4375 9.875 6.8625C10.4583 6.2875 11.1667 6 12 6C12.85 6 13.5625 6.2875 14.1375 6.8625C14.7125 7.4375 15 8.15 15 9C15 9.83333 14.7125 10.5417 14.1375 11.125C13.5625 11.7083 12.85 12 12 12Z" fill="white"/></svg> User Management</div>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M1 20V17.2C1 16.6333 1.14583 16.1125 1.4375 15.6375C1.72917 15.1625 2.11667 14.8 2.6 14.55C3.63333 14.0333 4.68333 13.6458 5.75 13.3875C6.81667 13.1292 7.9 13 9 13C10.1 13 11.1833 13.1292 12.25 13.3875C13.3167 13.6458 14.3667 14.0333 15.4 14.55C15.8833 14.8 16.2708 15.1625 16.5625 15.6375C16.8542 16.1125 17 16.6333 17 17.2V20H1ZM19 20V17C19 16.2667 18.7958 15.5625 18.3875 14.8875C17.9792 14.2125 17.4 13.6333 16.65 13.15C17.5 13.25 18.3 13.4208 19.05 13.6625C19.8 13.9042 20.5 14.2 21.15 14.55C21.75 14.8833 22.2083 15.2542 22.525 15.6625C22.8417 16.0708 23 16.5167 23 17V20H19ZM9 12C7.9 12 6.95833 11.6083 6.175 10.825C5.39167 10.0417 5 9.1 5 8C5 6.9 5.39167 5.95833 6.175 5.175C6.95833 4.39167 7.9 4 9 4C10.1 4 11.0417 4.39167 11.825 5.175C12.6083 5.95833 13 6.9 13 8C13 9.1 12.6083 10.0417 11.825 10.825C11.0417 11.6083 10.1 12 9 12ZM19 8C19 9.1 18.6083 10.0417 17.825 10.825C17.0417 11.6083 16.1 12 15 12C14.8167 12 14.5833 11.9792 14.3 11.9375C14.0167 11.8958 13.7833 11.85 13.6 11.8C14.05 11.2667 14.3958 10.675 14.6375 10.025C14.8792 9.375 15 8.7 15 8C15 7.3 14.8792 6.625 14.6375 5.975C14.3958 5.325 14.05 4.73333 13.6 4.2C13.8333 4.11667 14.0667 4.0625 14.3 4.0375C14.5333 4.0125 14.7667 4 15 4C16.1 4 17.0417 4.39167 17.825 5.175C18.6083 5.95833 19 6.9 19 8Z" fill="white"/></svg> All Users</a>
+        <a class="nav-sub-item" href="javascript:void(0)" onclick="closeSideNav(this)"><svg class="nav-ico" viewBox="0 0 24 24" fill="none"><path d="M16 21L15.7 19.5C15.5 19.4167 15.3125 19.3292 15.1375 19.2375C14.9625 19.1458 14.7833 19.0333 14.6 18.9L13.15 19.35L12.15 17.65L13.3 16.65C13.2667 16.4167 13.25 16.2 13.25 16C13.25 15.8 13.2667 15.5833 13.3 15.35L12.15 14.35L13.15 12.65L14.6 13.1C14.7833 12.9667 14.9625 12.8542 15.1375 12.7625C15.3125 12.6708 15.5 12.5833 15.7 12.5L16 11H18L18.3 12.5C18.5 12.5833 18.6875 12.675 18.8625 12.775C19.0375 12.875 19.2167 13 19.4 13.15L20.85 12.65L21.85 14.4L20.7 15.4C20.7333 15.6 20.75 15.8083 20.75 16.025C20.75 16.2417 20.7333 16.45 20.7 16.65L21.85 17.65L20.85 19.35L19.4 18.9C19.2167 19.0333 19.0375 19.1458 18.8625 19.2375C18.6875 19.3292 18.5 19.4167 18.3 19.5L18 21H16ZM2 20V17.2C2 16.65 2.14167 16.1333 2.425 15.65C2.70833 15.1667 3.1 14.8 3.6 14.55C4.45 14.1167 5.40833 13.75 6.475 13.45C7.54167 13.15 8.71667 13 10 13H10.35C10.45 13 10.55 13.0167 10.65 13.05C10.1667 14.25 9.96667 15.4417 10.05 16.625C10.1333 17.8083 10.5333 18.9333 11.25 20H2ZM17 18C17.55 18 18.0208 17.8042 18.4125 17.4125C18.8042 17.0208 19 16.55 19 16C19 15.45 18.8042 14.9792 18.4125 14.5875C18.0208 14.1958 17.55 14 17 14C16.45 14 15.9792 14.1958 15.5875 14.5875C15.1958 14.9792 15 15.45 15 16C15 16.55 15.1958 17.0208 15.5875 17.4125C15.9792 17.8042 16.45 18 17 18ZM10 12C8.9 12 7.95833 11.6083 7.175 10.825C6.39167 10.0417 6 9.1 6 8C6 6.9 6.39167 5.95833 7.175 5.175C7.95833 4.39167 8.9 4 10 4C11.1 4 12.0417 4.39167 12.825 5.175C13.6083 5.95833 14 6.9 14 8C14 9.1 13.6083 10.0417 12.825 10.825C12.0417 11.6083 11.1 12 10 12Z" fill="white"/></svg> Privileges</a>
+      </div>
+      <div class="nav-section-divider"></div>
+      <div class="nav-section">
+
+      </div>
+    </div>
+
+    <main class="create-content">
+      <h1 class="page-title">Create a Message</h1>
+      <div class="title-underline"></div>
+
+      <!-- Template Name -->
+      <div class="form-card">
+        <div class="field-label">
+          Template Name
+          <span class="material-icons">help_outline</span>
+        </div>
+        <input class="form-input" type="text" placeholder=""/>
+      </div>
+
+      <!-- To -->
+      <div class="form-card" style="padding:14px var(--sp-xl);">
+        <input class="form-input" type="text" placeholder="To"/>
+      </div>
+
+      <!-- Attach -->
+      <div class="form-card" style="padding:10px var(--sp-xl);">
+        <div class="attach-row">
+          <span class="material-icons">attach_file</span>
+          <span style="font-size:14px;color:var(--text-disabled);">Attach file</span>
+        </div>
+      </div>
+
+      <!-- Message Type + Subject + Message + AI -->
+      <div class="form-card">
+        <div class="form-row" style="margin-bottom:var(--sp-sm);">
+          <label>Message Type:</label>
+          <div class="msg-type-wrapper">
+            <div class="msg-type-trigger" onclick="toggleMsgType(this)">
+              <span class="msg-type-value">Notification with Acknowledgement</span>
+              <span class="material-icons">keyboard_arrow_down</span>
+            </div>
+            <div class="msg-type-dropdown">
+              <div class="msg-type-option selected" onclick="selectMsgType(this)">Notification with Acknowledgement</div>
+              <div class="msg-type-option" onclick="selectMsgType(this)">Notification with Form</div>
+              <div class="msg-type-option" onclick="selectMsgType(this)">Multiple Choice Question</div>
+              <div class="msg-type-option" onclick="selectMsgType(this)">Rating</div>
+              <div class="msg-type-option" onclick="selectMsgType(this)">Text Response</div>
+            </div>
+          </div>
+          <div class="rating-tabs" id="inlineRatingTabs" style="display:none;margin-bottom:0;margin-left:auto;flex-shrink:0;">
+            <button class="rating-tab-btn active" onclick="switchRatingTab('edit',this)"><span class="material-icons">edit</span> Edit</button>
+            <button class="rating-tab-btn" onclick="switchRatingTab('preview',this)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;"><mask id="mask0_rocket_tab" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#D9D9D9"/></mask><g mask="url(#mask0_rocket_tab)"><path d="M5.65005 10.0249L7.60005 10.8499C7.83338 10.3832 8.07505 9.93319 8.32505 9.49986C8.57505 9.06653 8.85005 8.63319 9.15005 8.19986L7.75005 7.92486L5.65005 10.0249ZM9.20005 12.0999L12.05 14.9249C12.75 14.6582 13.5 14.2499 14.3 13.6999C15.1 13.1499 15.85 12.5249 16.55 11.8249C17.7167 10.6582 18.6292 9.36236 19.2875 7.93736C19.9459 6.51236 20.2334 5.19986 20.15 3.99986C18.95 3.91653 17.6334 4.20403 16.2 4.86236C14.7667 5.52069 13.4667 6.4332 12.3 7.59986C11.6 8.29986 10.975 9.04986 10.425 9.84986C9.87505 10.6499 9.46672 11.3999 9.20005 12.0999ZM13.65 10.4749C13.2667 10.0915 13.075 9.62069 13.075 9.06236C13.075 8.50403 13.2667 8.0332 13.65 7.64986C14.0334 7.26653 14.5084 7.07486 15.075 7.07486C15.6417 7.07486 16.1167 7.26653 16.5 7.64986C16.8834 8.0332 17.075 8.50403 17.075 9.06236C17.075 9.62069 16.8834 10.0915 16.5 10.4749C16.1167 10.8582 15.6417 11.0499 15.075 11.0499C14.5084 11.0499 14.0334 10.8582 13.65 10.4749ZM14.125 18.4999L16.225 16.3999L15.95 14.9999C15.5167 15.2999 15.0834 15.5707 14.65 15.8124C14.2167 16.054 13.7667 16.2915 13.3 16.5249L14.125 18.4999ZM21.95 2.17486C22.2667 4.19153 22.0709 6.15403 21.3625 8.06236C20.6542 9.9707 19.4334 11.7915 17.7 13.5249L18.2 15.9999C18.2667 16.3332 18.25 16.6582 18.15 16.9749C18.05 17.2915 17.8834 17.5665 17.65 17.7999L13.45 21.9999L11.35 17.0749L7.07505 12.7999L2.15005 10.6999L6.32505 6.49986C6.55838 6.26653 6.83755 6.09986 7.16255 5.99986C7.48755 5.89986 7.81672 5.88319 8.15005 5.94986L10.625 6.44986C12.3584 4.71653 14.175 3.49153 16.075 2.77486C17.975 2.05819 19.9334 1.85819 21.95 2.17486ZM3.92505 15.9749C4.50838 15.3915 5.22088 15.0957 6.06255 15.0874C6.90422 15.079 7.61672 15.3665 8.20005 15.9499C8.78338 16.5332 9.07088 17.2457 9.06255 18.0874C9.05422 18.929 8.75838 19.6415 8.17505 20.2249C7.75838 20.6415 7.06255 20.9999 6.08755 21.2999C5.11255 21.5999 3.76672 21.8665 2.05005 22.0999C2.28338 20.3832 2.55005 19.0374 2.85005 18.0624C3.15005 17.0874 3.50838 16.3915 3.92505 15.9749ZM5.35005 17.3749C5.18338 17.5415 5.01672 17.8457 4.85005 18.2874C4.68338 18.729 4.56672 19.1749 4.50005 19.6249C4.95005 19.5582 5.39588 19.4457 5.83755 19.2874C6.27922 19.129 6.58338 18.9665 6.75005 18.7999C6.95005 18.5999 7.05838 18.3582 7.07505 18.0749C7.09172 17.7915 7.00005 17.5499 6.80005 17.3499C6.60005 17.1499 6.35838 17.054 6.07505 17.0624C5.79172 17.0707 5.55005 17.1749 5.35005 17.3749Z" fill="currentColor"/></g></svg> Preview</button>
+          </div>
+        </div>
+
+        <!-- Default fields (Subject, Message, AI) -->
+        <div class="default-fields" id="defaultFields" style="padding-bottom:84px;">
+          <div style="margin-bottom:var(--sp-lg);">
+            <input class="form-input" type="text" placeholder="Subject"/>
+          </div>
+
+          <div style="margin-bottom:var(--sp-lg);">
+            <input class="form-input" type="text" placeholder="Message"/>
+          </div>
+
+          <!-- AI Message Assistant -->
+          <div class="ai-section">
+            <div class="ai-label">
+              <span class="new-badge">NEW!</span>
+              Optional: AI Message Assistant
+              <span class="material-icons" style="font-size:18px;vertical-align:middle;color:var(--text-disabled);">help_outline</span>
+            </div>
+            <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">Select Audience:</div>
+            <div class="audience-pills">
+              <div class="pill">Patient</div>
+              <div class="pill">Staff</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rating fields (shown when Rating is selected) -->
+        <div class="rating-section" id="ratingFields">
+          <div class="rating-config">
+
+            <div id="ratingEditSubjectMessage">
+            <div class="float-field" style="margin-bottom:var(--sp-xs);">
+              <input class="form-input" id="ratingSubject" type="text" oninput="toggleFloatClass(this)" onblur="toggleFloatClass(this)"/>
+              <label class="float-label">Subject</label>
+            </div>
+
+            <div class="float-field" style="margin-bottom:var(--sp-xs);">
+              <input class="form-input" id="ratingMessage" type="text" oninput="toggleFloatClass(this)" onblur="toggleFloatClass(this)"/>
+              <label class="float-label">Message</label>
+            </div>
+
+            <div class="float-field">
+              <input class="form-input" id="ratingQuestion" type="text" oninput="toggleFloatClass(this)" onblur="toggleFloatClass(this)"/>
+              <label class="float-label">Question</label>
+            </div>
+            </div>
+
+            <div id="ratingPreviewEmail" style="display:none;margin-bottom:var(--sp-md);">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;justify-content:flex-end;">
+                <label style="font-size:14px;color:var(--text);white-space:nowrap;">Preview communication method:</label>
+                <div class="preview-channel-wrapper" style="position:relative;min-width:160px;">
+                  <div class="preview-channel-trigger" onclick="togglePreviewChannel(this)" style="display:flex;align-items:center;justify-content:space-between;border:none;border-bottom:1px solid var(--ccx-neutral-300);font-family:inherit;font-size:15px;color:#404041;padding:8px 0;background:transparent;cursor:pointer;width:100%;text-align:left;">
+                    <span class="preview-channel-icon material-icons" style="font-size:18px;margin-right:6px;">email</span>
+                    <span class="preview-channel-value" style="flex:1;">Email</span>
+                    <span class="material-icons" style="font-size:20px;color:var(--text-disabled);">keyboard_arrow_down</span>
+                  </div>
+                  <div class="preview-channel-dropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:-20px;right:-20px;background:var(--surface-elevated);border-radius:0 0 var(--radius-lg) var(--radius-lg);box-shadow:0 6px 20px rgba(0,0,0,.12);z-index:100;overflow:hidden;">
+                    <div class="preview-channel-opt" onclick="selectPreviewChannel(this,'email','Email','email')" style="padding:18px 20px;font-size:16px;color:#404041;cursor:pointer;border-bottom:1px solid var(--ccx-neutral-200);transition:background .12s;"><span class="material-icons" style="font-size:18px;vertical-align:middle;margin-right:8px;">email</span> Email</div>
+                    <div class="preview-channel-opt" onclick="selectPreviewChannel(this,'sms','SMS','sms')" style="padding:18px 20px;font-size:16px;color:#404041;cursor:pointer;border-bottom:1px solid var(--ccx-neutral-200);transition:background .12s;"><span class="material-icons" style="font-size:18px;vertical-align:middle;margin-right:8px;">sms</span> SMS</div>
+                    <div class="preview-channel-opt" onclick="selectPreviewChannel(this,'voice','Voice','phone')" style="padding:18px 20px;font-size:16px;color:#404041;cursor:pointer;transition:background .12s;"><span class="material-icons" style="font-size:18px;vertical-align:middle;margin-right:8px;">phone</span> Voice</div>
+                  </div>
+                </div>
+              </div>
+              <div id="previewEmailCard" style="background:var(--surface-elevated);border:1px solid #e0e0e0;border-radius:var(--radius-md);overflow:hidden;">              <div style="padding:14px 16px;background:#f5f5f5;border-bottom:1px solid #e0e0e0;">
+                <div style="font-size:12px;color:var(--text-secondary);margin-bottom:2px;">Subject</div>
+                <div id="previewSubjectLine" style="font-size:15px;font-weight:600;color:var(--text);"></div>
+              </div>
+              <div style="padding:16px;border-bottom:1px solid #e0e0e0;">
+                <div id="previewMessageBody" style="font-size:14px;color:var(--text);line-height:1.6;"></div>
+              </div>
+              <div style="padding:16px;">
+                <div id="previewQuestionText" style="font-size:14px;color:var(--text);line-height:1.6;margin-bottom:16px;"></div>
+                <div class="inline-preview-nums" id="previewEmailNums">
+                  <div class="pnum-wrap active" onclick="showInlinePreview(1)"><div class="pnum">1</div><span class="pnum-label" id="previewLabel1"></span></div>
+                  <div class="pnum-wrap" onclick="showInlinePreview(2)"><div class="pnum">2</div><span class="pnum-label" id="previewLabel2"></span></div>
+                  <div class="pnum-wrap" onclick="showInlinePreview(3)"><div class="pnum">3</div><span class="pnum-label" id="previewLabel3"></span></div>
+                  <div class="pnum-wrap" onclick="showInlinePreview(4)"><div class="pnum">4</div><span class="pnum-label" id="previewLabel4"></span></div>
+                  <div class="pnum-wrap" onclick="showInlinePreview(5)"><div class="pnum">5</div><span class="pnum-label" id="previewLabel5"></span></div>
+                </div>
+              </div>
+              <!-- Thank You Page section inside email card -->
+              <div id="previewResponsePageSection">
+                <div style="padding:12px 16px;background:#f5f5f5;border-top:1px solid #e0e0e0;">
+                  <div style="font-size:14px;font-weight:400;font-family:Nunito,sans-serif;color:var(--text-secondary);">Thank You Page — shown after rating is submitted</div>
+                </div>
+                <div class="inline-preview-panel" style="padding:32px 24px;">
+                  <div class="inline-preview-card" style="border:none;box-shadow:none;padding:0;">
+                    <div class="material-icons preview-icon">check_circle</div>
+                    <div class="preview-heading" id="inlinePreviewHeading">We appreciate your feedback</div>
+                    <div class="preview-message" id="inlinePreviewMessage">We're sorry to hear about your experience. Your feedback helps us improve. A member of our team will follow up with you shortly.</div>
+                    <a class="preview-link" id="inlinePreviewLink" href="#" style="display:none;" onclick="event.preventDefault()"><span class="material-icons" style="font-size:16px;">open_in_new</span> <span id="inlinePreviewLinkText">Leave a Review</span></a>
+                  </div>
+                </div>
+              </div>
+              </div>
+
+              <!-- SMS Phone Mockup -->
+              <div id="previewSmsCard" style="display:none;">
+                <div class="sms-phone">
+                  <div class="sms-phone-header">
+                    <span class="material-icons">arrow_back_ios</span>
+                    <span>Cardiology Department</span>
+                  </div>
+                  <div class="sms-phone-body">
+                    <div style="text-align:center;font-size:11px;color:var(--text-disabled);margin-bottom:4px;">Today 2:30 PM</div>
+                    <div class="sms-bubble incoming" id="smsBubbleOutgoing"></div>
+                    <div class="sms-bubble outgoing" id="smsBubbleReply" style="display:none;">5</div>
+                    <div style="align-self:flex-end;font-size:10px;color:var(--text-disabled);margin-top:-6px;display:none;" id="smsDelivered">Delivered</div>
+                    <div class="sms-bubble incoming" id="smsBubbleResponse" style="display:none;"></div>
+                  </div>
+                  <div class="sms-input-bar">
+                    <div class="sms-input-field">Text Message</div>
+                    <span class="material-icons">send</span>
+                  </div>
+                </div>
+                <div style="text-align:center;margin-top:14px;margin-bottom:8px;font-size:12px;color:var(--text-secondary);">Select a rating to preview the response</div>
+                <div style="display:flex;gap:6px;justify-content:center;">
+                  <div class="sms-rating-tab" onclick="showSmsResponse(1)" style="width:32px;height:32px;border-radius:50%;background:#ADC838;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;font-size:13px;transition:all .15s;">1</div>
+                  <div class="sms-rating-tab" onclick="showSmsResponse(2)" style="width:32px;height:32px;border-radius:50%;background:#E8E8E8;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;font-size:13px;transition:all .15s;">2</div>
+                  <div class="sms-rating-tab" onclick="showSmsResponse(3)" style="width:32px;height:32px;border-radius:50%;background:#E8E8E8;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;font-size:13px;transition:all .15s;">3</div>
+                  <div class="sms-rating-tab" onclick="showSmsResponse(4)" style="width:32px;height:32px;border-radius:50%;background:#E8E8E8;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;font-size:13px;transition:all .15s;">4</div>
+                  <div class="sms-rating-tab" onclick="showSmsResponse(5)" style="width:32px;height:32px;border-radius:50%;background:#E8E8E8;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;font-size:13px;transition:all .15s;">5</div>
+                </div>
+              </div>
+
+              <!-- Voice Preview -->
+              <div id="previewVoiceCard" style="display:none;">
+                <div class="voice-phone">
+                  <div class="voice-phone-header">
+                    <span class="material-icons">phone_in_talk</span>
+                    <div>
+                      <div class="voice-caller">Cardiology Department</div>
+                      <div class="voice-status" id="voiceStatus">Incoming call</div>
+                    </div>
+                  </div>
+                  <div class="voice-phone-body">
+                    <div class="voice-waveform" id="voiceWaveform">
+                      <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                      <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                      <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                      <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                      <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    </div>
+                    <div class="voice-timer" id="voiceTimer">0:00</div>
+                    <button class="voice-play-btn" id="voicePlayBtn" onclick="toggleVoicePlayback()">
+                      <span class="material-icons" id="voicePlayIcon">play_arrow</span>
+                    </button>
+                    <div style="font-size:12px;color:var(--text-secondary);margin-top:8px;" id="voicePlayLabel">Play voice preview</div>
+                    <div class="voice-script-toggle" onclick="toggleVoiceScript()">
+                      <span class="material-icons" style="font-size:16px;">description</span> View script
+                      <span class="material-icons voice-script-arrow" id="voiceScriptArrow" style="font-size:16px;">keyboard_arrow_down</span>
+                    </div>
+                    <div class="voice-script" id="voiceScript" style="display:none;">
+                      <div class="voice-script-section">
+                        <div class="voice-script-label">Initial Message</div>
+                        <div class="voice-script-text" id="voiceScriptInitial"></div>
+                      </div>
+                      <div class="voice-script-divider"></div>
+                      <div class="voice-script-section">
+                        <div class="voice-script-label" style="margin-bottom:4px;">Response</div>
+                        <div style="text-align:center;margin-bottom:8px;font-size:12px;color:var(--text-secondary);">Select a rating to preview the response</div>
+                        <div style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;">
+                          <div class="voice-rating-tab" onclick="selectVoiceRating(1)" style="width:32px;height:32px;border-radius:50%;background:#ADC838;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;font-size:13px;transition:all .15s;">1</div>
+                          <div class="voice-rating-tab" onclick="selectVoiceRating(2)" style="width:32px;height:32px;border-radius:50%;background:#E8E8E8;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;font-size:13px;transition:all .15s;">2</div>
+                          <div class="voice-rating-tab" onclick="selectVoiceRating(3)" style="width:32px;height:32px;border-radius:50%;background:#E8E8E8;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;font-size:13px;transition:all .15s;">3</div>
+                          <div class="voice-rating-tab" onclick="selectVoiceRating(4)" style="width:32px;height:32px;border-radius:50%;background:#E8E8E8;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;font-size:13px;transition:all .15s;">4</div>
+                          <div class="voice-rating-tab" onclick="selectVoiceRating(5)" style="width:32px;height:32px;border-radius:50%;background:#E8E8E8;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;font-size:13px;transition:all .15s;">5</div>
+                        </div>
+                        <input type="hidden" id="voiceRatingSelect" value="1"/>
+                        <div class="voice-script-text" id="voiceScriptResponse"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="font-size:13px;color:var(--text-secondary);margin-top:12px;font-style:italic;text-align:center;line-height:1.5;">Note: Button URLs are not included in voice calls and will be omitted from the script.</div>
+              </div>
+
+            </div>
+            <div id="ratingOptionsWrap" style="margin-top:0;padding-top:16px;">
+
+              <!-- EDIT TAB -->
+              <div class="rating-tab-content active" id="ratingTabEdit">
+
+              <div class="optB-container">
+                <div style="margin:-20px -20px 16px;padding:12px 20px;background:#f5f5f5;border-bottom:1px solid #e0e0e0;border-radius:var(--radius-md) var(--radius-md) 0 0;">
+                  <div style="font-size:14px;font-weight:400;font-family:Nunito,sans-serif;color:var(--text-secondary);">Rating Configuration</div>
+                </div>
+                <div class="optB-pills-row" style="margin-bottom:20px;">
+                  <div class="optB-num selected" onclick="selectBRating(this,1)">1</div>
+                  <div class="optB-num" onclick="selectBRating(this,2)">2</div>
+                  <div class="optB-num" onclick="selectBRating(this,3)">3</div>
+                  <div class="optB-num" onclick="selectBRating(this,4)">4</div>
+                  <div class="optB-num" onclick="selectBRating(this,5)">5</div>
+                </div>
+
+                  <div class="optB-detail" id="bDetail1" style="display:block;">
+                    <label class="optB-field-label">Rating 1 Label:</label>
+                    <input class="form-input" type="text" value="Poor" data-rating="1"/>
+                    <div class="ty-accordion-header" onclick="toggleTyAccordion(this)">
+                      <span class="ty-title">Thank You Page — shown after rating is submitted</span>
+                      <span class="material-icons">keyboard_arrow_down</span>
+                    </div>
+                    <div class="ty-accordion-body">
+                    <label class="optB-field-label">Heading:</label>
+                    <input class="form-input response-heading" type="text" value="We appreciate your feedback" data-rating="1"/>
+                    <label class="optB-field-label">Body:</label>
+                    <textarea class="response-message" data-rating="1">We're sorry to hear about your experience. Your feedback helps us improve. A member of our team will follow up with you shortly.</textarea>
+                    <label class="optB-field-label">Button URL (optional):</label>
+                    <input class="form-input response-url" type="url" placeholder="https://" data-rating="1" oninput="validateUrl(this)" onblur="validateUrl(this)"/>
+                    <div class="url-error-msg" data-rating="1"><span class="material-icons">error_outline</span> Please enter a valid URL (e.g. https://example.com)</div>
+                    <label class="optB-field-label">Button Text:</label>
+                    <input class="form-input response-link-text" type="text" placeholder="e.g. Leave a Google Review" data-rating="1"/>
+                    </div>
+                  </div>
+
+                  <div class="optB-detail" id="bDetail2" style="display:none;">
+                    <label class="optB-field-label">Rating 2 Label:</label>
+                    <input class="form-input" type="text" value="Fair"/>
+                    <div class="ty-accordion-header" onclick="toggleTyAccordion(this)">
+                      <span class="ty-title">Thank You Page — shown after rating is submitted</span>
+                      <span class="material-icons">keyboard_arrow_down</span>
+                    </div>
+                    <div class="ty-accordion-body">
+                    <label class="optB-field-label">Heading:</label>
+                    <input class="form-input response-heading" type="text" value="Thank you for your feedback" data-rating="2"/>
+                    <label class="optB-field-label">Body:</label>
+                    <textarea class="response-message" data-rating="2">We value your input and will use it to enhance our services. If you'd like to share more details, please don't hesitate to reach out.</textarea>
+                    <label class="optB-field-label">Button URL (optional):</label>
+                    <input class="form-input response-url" type="url" placeholder="https://" data-rating="2" oninput="validateUrl(this)" onblur="validateUrl(this)"/>
+                    <div class="url-error-msg" data-rating="2"><span class="material-icons">error_outline</span> Please enter a valid URL (e.g. https://example.com)</div>
+                    <label class="optB-field-label">Button Text:</label>
+                    <input class="form-input response-link-text" type="text" placeholder="e.g. Leave a Google Review" data-rating="2"/>
+                    </div>
+                  </div>
+
+                  <div class="optB-detail" id="bDetail3" style="display:none;">
+                    <label class="optB-field-label">Rating 3 Label:</label>
+                    <input class="form-input" type="text" value="Average"/>
+                    <div class="ty-accordion-header" onclick="toggleTyAccordion(this)">
+                      <span class="ty-title">Thank You Page — shown after rating is submitted</span>
+                      <span class="material-icons">keyboard_arrow_down</span>
+                    </div>
+                    <div class="ty-accordion-body">
+                    <label class="optB-field-label">Heading:</label>
+                    <input class="form-input response-heading" type="text" value="Thank you!" data-rating="3"/>
+                    <label class="optB-field-label">Body:</label>
+                    <textarea class="response-message" data-rating="3">Thanks for sharing your thoughts. We're always working to improve and your feedback is helpful.</textarea>
+                    <label class="optB-field-label">Button URL (optional):</label>
+                    <input class="form-input response-url" type="url" placeholder="https://" data-rating="3" oninput="validateUrl(this)" onblur="validateUrl(this)"/>
+                    <div class="url-error-msg" data-rating="3"><span class="material-icons">error_outline</span> Please enter a valid URL (e.g. https://example.com)</div>
+                    <label class="optB-field-label">Button Text:</label>
+                    <input class="form-input response-link-text" type="text" placeholder="e.g. Leave a Google Review" data-rating="3"/>
+                    </div>
+                  </div>
+
+                  <div class="optB-detail" id="bDetail4" style="display:none;">
+                    <label class="optB-field-label">Rating 4 Label:</label>
+                    <input class="form-input" type="text" value="Good"/>
+                    <div class="ty-accordion-header" onclick="toggleTyAccordion(this)">
+                      <span class="ty-title">Thank You Page — shown after rating is submitted</span>
+                      <span class="material-icons">keyboard_arrow_down</span>
+                    </div>
+                    <div class="ty-accordion-body">
+                    <label class="optB-field-label">Heading:</label>
+                    <input class="form-input response-heading" type="text" value="We're glad you had a good experience!" data-rating="4"/>
+                    <label class="optB-field-label">Body:</label>
+                    <textarea class="response-message" data-rating="4">Thank you for the great rating! We'd love it if you could share your experience with others.</textarea>
+                    <label class="optB-field-label">Button URL (optional):</label>
+                    <input class="form-input response-url" type="url" placeholder="https://" data-rating="4" oninput="validateUrl(this)" onblur="validateUrl(this)"/>
+                    <div class="url-error-msg" data-rating="4"><span class="material-icons">error_outline</span> Please enter a valid URL (e.g. https://example.com)</div>
+                    <label class="optB-field-label">Button Text:</label>
+                    <input class="form-input response-link-text" type="text" placeholder="e.g. Leave a Google Review" data-rating="4"/>
+                    </div>
+                  </div>
+
+                  <div class="optB-detail" id="bDetail5" style="display:none;">
+                    <label class="optB-field-label">Rating 5 Label:</label>
+                    <input class="form-input" type="text" value="Excellent"/>
+                    <div class="ty-accordion-header" onclick="toggleTyAccordion(this)">
+                      <span class="ty-title">Thank You Page — shown after rating is submitted</span>
+                      <span class="material-icons">keyboard_arrow_down</span>
+                    </div>
+                    <div class="ty-accordion-body">
+                    <label class="optB-field-label">Heading:</label>
+                    <input class="form-input response-heading" type="text" value="Thank you for the amazing rating!" data-rating="5"/>
+                    <label class="optB-field-label">Body:</label>
+                    <textarea class="response-message" data-rating="5">We're thrilled you had a wonderful experience! It would mean a lot if you could share your review on Google.</textarea>
+                    <label class="optB-field-label">Button URL (optional):</label>
+                    <input class="form-input response-url" type="url" placeholder="https://" data-rating="5" oninput="validateUrl(this)" onblur="validateUrl(this)"/>
+                    <div class="url-error-msg" data-rating="5"><span class="material-icons">error_outline</span> Please enter a valid URL (e.g. https://example.com)</div>
+                    <label class="optB-field-label">Button Text:</label>
+                    <input class="form-input response-link-text" type="text" placeholder="e.g. Leave a Google Review" data-rating="5"/>
+                    </div>
+                  </div>
+
+              </div>
+              </div><!-- /ratingTabEdit -->
+
+              <!-- PREVIEW TAB -->
+              <div class="rating-tab-content" id="ratingTabPreview">
+              </div><!-- /ratingTabPreview -->
+
+            </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="form-card" id="vaultSection" style="display:none;">
+        <div class="vault-row">
+          <span class="vault-label">ACM Vault Template:</span>
+          <label class="toggle-switch">
+            <input type="checkbox"/>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Sticky footer bar -->
+  <div class="create-footer" id="createFooter" style="display:none;">
+    <button class="btn-cancel" onclick="goTo('page-list')">Cancel</button>
+    <button class="btn-outline">Save Template</button>
+    <div class="btn-divider"></div>
+    <button class="btn-outline">Test</button>
+    <button class="btn-primary">Send Now</button>
+  </div>
+</div><!-- /page-create -->
+
+<!-- Thank You Page Preview Modal -->
+<div class="thankyou-overlay" id="thankyouOverlay" onclick="if(event.target===this)closeThankYou()">
+  <div class="thankyou-modal">
+    <div class="thankyou-modal-header">
+      <span>Thank You Page Preview</span>
+      <span class="material-icons" onclick="closeThankYou()">close</span>
+    </div>
+    <div class="thankyou-modal-body">
+      <div class="thankyou-rating-tabs" style="display:flex;gap:6px;justify-content:center;margin-bottom:24px;">
+        <div class="rating-tab" onclick="showThankYouForRating(1)" style="width:36px;height:36px;border-radius:50%;background:#E8E8E8;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;font-size:14px;transition:all .15s;">1</div>
+        <div class="rating-tab" onclick="showThankYouForRating(2)" style="width:36px;height:36px;border-radius:50%;background:#E8E8E8;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;font-size:14px;transition:all .15s;">2</div>
+        <div class="rating-tab" onclick="showThankYouForRating(3)" style="width:36px;height:36px;border-radius:50%;background:#E8E8E8;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;font-size:14px;transition:all .15s;">3</div>
+        <div class="rating-tab" onclick="showThankYouForRating(4)" style="width:36px;height:36px;border-radius:50%;background:#E8E8E8;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;font-size:14px;transition:all .15s;">4</div>
+        <div class="rating-tab" onclick="showThankYouForRating(5)" style="width:36px;height:36px;border-radius:50%;background:#E8E8E8;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;font-size:14px;transition:all .15s;">5</div>
+      </div>
+      <div class="material-icons thankyou-icon" id="tyIcon">check_circle</div>
+      <div class="thankyou-heading" id="tyHeading">Thank you for your feedback</div>
+      <div class="thankyou-message" id="tyMessage">We appreciate your response.</div>
+      <a class="thankyou-link" id="tyLink" href="#" style="display:none;" onclick="event.preventDefault()"><span class="material-icons" style="font-size:16px;">open_in_new</span> <span id="tyLinkText">Leave a Review</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* Floating label helper */
+  function toggleFloatClass(el){
+    if(el.value.trim()) el.classList.add('has-value');
+    else el.classList.remove('has-value');
+  }
+
+  function goTo(pageId) {
+    document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+    document.getElementById(pageId).classList.add('active');
+    var footer=document.getElementById('createFooter');
+    if(footer) footer.style.display=pageId==='page-create'?'flex':'none';
+    window.scrollTo(0,0);
+  }
+  function toggleCat(header) {
+    var items = header.nextElementSibling;
+    items.classList.toggle('open');
+    header.classList.toggle('open');
+  }
+  document.querySelectorAll('.pill').forEach(function(pill){
+    pill.addEventListener('click', function(){ this.classList.toggle('active'); });
+  });
+
+  /* Custom dropdown */
+  function toggleMsgType(trigger){
+    trigger.classList.toggle('open');
+    trigger.nextElementSibling.classList.toggle('open');
+  }
+  function selectMsgType(opt){
+    var wrapper=opt.closest('.msg-type-wrapper');
+    var value=opt.textContent.trim();
+    wrapper.querySelector('.msg-type-value').textContent=value;
+    wrapper.querySelectorAll('.msg-type-option').forEach(function(o){o.classList.remove('selected');});
+    opt.classList.add('selected');
+    wrapper.querySelector('.msg-type-trigger').classList.remove('open');
+    wrapper.querySelector('.msg-type-dropdown').classList.remove('open');
+    if(value==='Rating'){
+      document.getElementById('defaultFields').classList.add('hidden');
+      document.getElementById('ratingFields').classList.add('visible');
+      document.getElementById('vaultSection').style.display='';
+      document.getElementById('inlineRatingTabs').style.display='';
+    } else {
+      document.getElementById('defaultFields').classList.remove('hidden');
+      document.getElementById('ratingFields').classList.remove('visible');
+      document.getElementById('vaultSection').style.display='none';
+      document.getElementById('inlineRatingTabs').style.display='none';
+    }
+  }
+  document.addEventListener('click',function(e){
+    if(!e.target.closest('.msg-type-wrapper')){
+      document.querySelectorAll('.msg-type-trigger').forEach(function(t){t.classList.remove('open');});
+      document.querySelectorAll('.msg-type-dropdown').forEach(function(d){d.classList.remove('open');});
+    }
+  });
+
+  /* Expandable side nav */
+  function openExpandedNav(id){
+    document.getElementById(id).classList.add('open');
+  }
+  function closeExpandedNav(id){
+    document.getElementById(id).classList.remove('open');
+  }
+
+  /* Context Selector (matches NavContextWidgetView.java behavior) */
+  function toggleContextDD(e,toggle){
+    e.preventDefault();
+    var container=toggle.closest('.context-container');
+    var dd=container.querySelector('.context-dropdown');
+    var icon=toggle.querySelector('.material-icons');
+    if(dd.classList.contains('open')){
+      hideContextDropdown(container);
+    } else {
+      showContextDropdown(container);
+    }
+  }
+  function showContextDropdown(container){
+    var dd=container.querySelector('.context-dropdown');
+    var icon=container.querySelector('.context-toggle .material-icons');
+    var input=container.querySelector('.context-search input');
+    dd.classList.add('open');
+    icon.textContent='keyboard_arrow_up';
+    if(input){input.value='';filterFacilities(input);}
+  }
+  function hideContextDropdown(container){
+    var dd=container.querySelector('.context-dropdown');
+    var icon=container.querySelector('.context-toggle .material-icons');
+    var input=container.querySelector('.context-search input');
+    dd.classList.remove('open');
+    icon.textContent='keyboard_arrow_down';
+    if(input){input.value='';filterFacilities(input);}
+  }
+  function selectContext(item,facilityId,facilityName){
+    var container=item.closest('.context-container');
+    var nav=item.closest('.top-nav');
+    container.querySelectorAll('.context-item').forEach(function(i){i.classList.remove('selected');});
+    item.classList.add('selected');
+    container.querySelector('.context-name').textContent=facilityName;
+    var titleEl=nav.querySelector('.nav-title');
+    if(titleEl){
+      titleEl.textContent=(facilityId==='organizational')?'Organization:':'Facility:';
+    }
+    hideContextDropdown(container);
+  }
+  function filterFacilities(input){
+    var search=input.value.toLowerCase().trim();
+    var container=input.closest('.context-container');
+    var items=container.querySelectorAll('.context-item, .context-header');
+    var currentHeader=null;
+    var headerHasVisible=false;
+    items.forEach(function(el){
+      if(el.classList.contains('context-header')){
+        if(currentHeader&&!headerHasVisible) currentHeader.style.display='none';
+        currentHeader=el;
+        headerHasVisible=false;
+        currentHeader.style.display='';
+      } else {
+        var text=el.textContent.toLowerCase();
+        if(!search||text.indexOf(search)!==-1){
+          el.style.display='';
+          headerHasVisible=true;
+        } else {
+          el.style.display='none';
+        }
+      }
+    });
+    if(currentHeader&&!headerHasVisible) currentHeader.style.display='none';
+    /* Update search icon (matches updateSearchIcon) */
+    var panel=input.closest('.context-search');
+    var icon=panel.querySelector('.search-icon');
+    if(search){
+      panel.setAttribute('data-has-content','true');
+      icon.textContent='close';
+    } else {
+      panel.removeAttribute('data-has-content');
+      icon.textContent='search';
+    }
+  }
+  function clearContextSearch(icon){
+    var input=icon.closest('.context-search').querySelector('input');
+    if(input.value){
+      input.value='';
+      filterFacilities(input);
+    }
+  }
+  /* Logo toggles side nav (matches addNavToggleHandler) */
+  function toggleSideNavFromLogo(logo){
+    var nav=logo.closest('.top-nav');
+    var page=nav.closest('body')||document;
+    var aside=nav.parentElement.querySelector('.side-nav');
+    var navId=aside?aside.getAttribute('onmouseenter'):'';
+    /* Extract nav id from onmouseenter attribute */
+    var match=navId.match(/openExpandedNav\('(\w+)'\)/);
+    if(match){
+      var id=match[1];
+      var panel=document.getElementById(id);
+      if(panel&&panel.classList.contains('open')){
+        panel.classList.remove('open');
+      } else if(panel){
+        panel.classList.add('open');
+      }
+    }
+  }
+  /* Click outside closes context dropdown (matches NativePreviewHandler) */
+  document.addEventListener('click',function(e){
+    document.querySelectorAll('.context-container').forEach(function(c){
+      if(!c.contains(e.target)){
+        var dd=c.querySelector('.context-dropdown');
+        if(dd&&dd.classList.contains('open')) hideContextDropdown(c);
+      }
+    });
+  });
+  /* Top nav dropdowns (Settings, Support) */
+  function showTopDD(wrap){
+    wrap.querySelector('.top-dd-body').classList.add('open');
+    document.querySelectorAll('.top-dropdown-wrap').forEach(function(w){
+      if(w!==wrap) w.querySelector('.top-dd-body').classList.remove('open');
+    });
+  }
+  function hideTopDD(wrap){
+    wrap.querySelector('.top-dd-body').classList.remove('open');
+  }
+  function toggleTopDD(e,trigger){
+    e.preventDefault();
+    var body=trigger.nextElementSibling;
+    body.classList.toggle('open');
+  }
+
+  /* Close side nav when clicking a link (matches source: closeSideNav called after each handler) */
+  function closeSideNav(link){
+    if(link){var panel=link.closest('.expanded-nav');if(panel) panel.classList.remove('open');}
+  }
+
+  /* Option B â€” Side-by-side rating select */
+  var tyAccordionOpen=false;
+  function toggleTyAccordion(header){
+    tyAccordionOpen=!tyAccordionOpen;
+    /* Sync all accordion panels to same state */
+    document.querySelectorAll('.ty-accordion-header').forEach(function(h){
+      h.classList.toggle('open',tyAccordionOpen);
+      h.nextElementSibling.classList.toggle('open',tyAccordionOpen);
+    });
+  }
+
+  function selectBRating(el,n){
+    document.querySelectorAll('.optB-num').forEach(function(b){b.classList.remove('selected');});
+    el.classList.add('selected');
+    for(var i=1;i<=5;i++){
+      var d=document.getElementById('bDetail'+i);
+      if(d) d.style.display=i===n?'block':'none';
+    }
+    /* Apply current accordion state to the visible panel */
+    var detail=document.getElementById('bDetail'+n);
+    if(detail){
+      var h=detail.querySelector('.ty-accordion-header');
+      var b=detail.querySelector('.ty-accordion-body');
+      if(h) h.classList.toggle('open',tyAccordionOpen);
+      if(b) b.classList.toggle('open',tyAccordionOpen);
+    }
+  }
+
+  function selectRating(el,n){
+    document.querySelectorAll('.rating-number-box').forEach(function(b){b.classList.remove('selected');});
+    el.classList.add('selected');
+  }
+
+  /* Rating Response Card toggle */
+  function toggleResponseCard(header){
+    var body=header.nextElementSibling;
+    var isOpen=header.classList.contains('open');
+    header.classList.toggle('open');
+    body.classList.toggle('open');
+  }
+
+  function updateResponsePreview(el){
+    var card=el.closest('.rating-response-card');
+    var heading=card.querySelector('.response-heading');
+    var preview=card.querySelector('.response-preview');
+    if(heading&&heading.value){
+      preview.textContent=' â€” '+heading.value;
+    } else {
+      preview.textContent='';
+    }
+  }
+
+  /* Thank You Preview Modal */
+  function previewThankYou(){
+    document.getElementById('thankyouOverlay').classList.add('open');
+    var selectedBox=document.querySelector('.optB-num.selected');
+    var ratingNum=selectedBox?parseInt(selectedBox.textContent):1;
+    showThankYouForRating(ratingNum);
+  }
+
+  function closeThankYou(){
+    document.getElementById('thankyouOverlay').classList.remove('open');
+  }
+
+  function showThankYouForRating(n){
+    var tabs=document.querySelectorAll('.rating-tab');
+    tabs.forEach(function(t){
+      t.style.background=parseInt(t.textContent)===n?'#ADC838':'#E8E8E8';
+      t.style.color=parseInt(t.textContent)===n?'#fff':'inherit';
+    });
+    var card=document.getElementById('bDetail'+n);
+    if(!card)return;
+    var heading=card.querySelector('.response-heading');
+    var message=card.querySelector('.response-message');
+    var url=card.querySelector('.response-url');
+    var linkText=card.querySelector('.response-link-text');
+    document.getElementById('tyHeading').textContent=heading?heading.value:'Thank you';
+    document.getElementById('tyMessage').textContent=message?message.value:'';
+    var tyLink=document.getElementById('tyLink');
+    if(url&&url.value){
+      tyLink.style.display='inline-flex';
+      tyLink.href=url.value;
+      document.getElementById('tyLinkText').textContent=linkText&&linkText.value?linkText.value:'Visit Link';
+    } else {
+      tyLink.style.display='none';
+    }
+  }
+
+  /* Rating Edit/Preview Tabs */
+  function switchRatingTab(tab,btn){
+    document.querySelectorAll('.rating-tab-btn').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');
+    document.querySelectorAll('.rating-tab-content').forEach(function(c){c.classList.remove('active');});
+    if(tab==='edit'){
+      document.getElementById('ratingTabEdit').classList.add('active');
+      document.getElementById('ratingEditSubjectMessage').style.display='';
+      document.getElementById('ratingPreviewEmail').style.display='none';
+      var roh=document.getElementById('ratingOptionsHeading');
+      if(roh) roh.style.display='';
+      document.getElementById('ratingOptionsWrap').style.marginTop='0';
+      document.getElementById('ratingOptionsWrap').style.paddingTop='16px';
+      document.getElementById('ratingPreviewEmail').style.marginBottom='var(--sp-md)';
+      stopVoice();
+    } else {
+      document.getElementById('ratingTabPreview').classList.add('active');
+      document.getElementById('ratingEditSubjectMessage').style.display='none';
+      document.getElementById('ratingPreviewEmail').style.display='';
+      var roh2=document.getElementById('ratingOptionsHeading');
+      if(roh2) roh2.style.display='none';
+      document.getElementById('ratingOptionsWrap').style.marginTop='0';
+      document.getElementById('ratingOptionsWrap').style.paddingTop='0';
+      document.getElementById('ratingPreviewEmail').style.marginBottom='24px';
+      /* Populate email preview */
+      var subj=document.getElementById('ratingSubject').value||'';
+      var msg=document.getElementById('ratingMessage').value||'';
+      var q=document.getElementById('ratingQuestion').value||'';
+      document.getElementById('previewSubjectLine').textContent='Notice from Cardiology Department: '+(subj||'—');
+      document.getElementById('previewMessageBody').textContent='This is an important message from the Cardiology Department, regarding '+(msg||'—');
+      document.getElementById('previewQuestionText').innerHTML='Please choose a rating between 1 and 5 for the following question:<br><strong>'+(q||'—')+'</strong>';
+      /* Populate preview label text under rating nums */
+      for(var i=1;i<=5;i++){
+        var det=document.getElementById('bDetail'+i);
+        var lbl=det?det.querySelector('input.form-input'):null;
+        var plbl=document.getElementById('previewLabel'+i);
+        if(plbl) plbl.textContent=lbl?lbl.value:'';
+      }
+      /* Restore correct channel view */
+      document.getElementById('previewEmailCard').style.display='none';
+      document.getElementById('previewSmsCard').style.display='none';
+      document.getElementById('previewVoiceCard').style.display='none';
+      stopVoice();
+      if(currentChannel==='sms'){
+        document.getElementById('previewSmsCard').style.display='';
+        populateSmsBubbles();
+      } else if(currentChannel==='voice'){
+        document.getElementById('previewVoiceCard').style.display='';
+        populateVoiceScript();
+      } else {
+        document.getElementById('previewEmailCard').style.display='';
+        showInlinePreview(1);
+      }
+    }
+  }
+
+  /* Preview channel dropdown */
+  function togglePreviewChannel(trigger){
+    var dd=trigger.nextElementSibling;
+    dd.style.display=dd.style.display==='block'?'none':'block';
+  }
+  var currentChannel='email';
+  function selectPreviewChannel(opt,value,label,icon){
+    var wrapper=opt.closest('.preview-channel-wrapper');
+    wrapper.querySelector('.preview-channel-value').textContent=label;
+    wrapper.querySelector('.preview-channel-icon').textContent=icon;
+    wrapper.querySelector('.preview-channel-dropdown').style.display='none';
+    currentChannel=value;
+    var emailCard=document.getElementById('previewEmailCard');
+    var smsCard=document.getElementById('previewSmsCard');
+    var voiceCard=document.getElementById('previewVoiceCard');
+    emailCard.style.display='none';
+    smsCard.style.display='none';
+    voiceCard.style.display='none';
+    stopVoice();
+    if(value==='sms'){
+      smsCard.style.display='';
+      populateSmsBubbles();
+    } else if(value==='voice'){
+      voiceCard.style.display='';
+      populateVoiceScript();
+    } else {
+      emailCard.style.display='';
+      showInlinePreview(1);
+    }
+  }
+
+  /* Voice playback */
+  var voicePlaying=false;
+  var voiceTimerInterval=null;
+  var voiceTimerSeconds=0;
+  function toggleVoicePlayback(){
+    if(voicePlaying){
+      stopVoice();
+    } else {
+      playVoice();
+    }
+  }
+  function playVoice(){
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    voicePlaying=true;
+    document.getElementById('voicePlayIcon').textContent='stop';
+    document.getElementById('voicePlayLabel').textContent='Playing...';
+    document.getElementById('voiceStatus').textContent='Connected';
+    document.getElementById('voiceWaveform').classList.add('active');
+    voiceTimerSeconds=0;
+    updateTimerDisplay();
+    voiceTimerInterval=setInterval(function(){voiceTimerSeconds++;updateTimerDisplay();},1000);
+
+    var msg=document.getElementById('ratingMessage').value||'your appointment';
+    var q=document.getElementById('ratingQuestion').value||'your experience';
+    var label1='',label5='';
+    var d1=document.getElementById('bDetail1');
+    var d5=document.getElementById('bDetail5');
+    if(d1){var inp=d1.querySelector('input.form-input');if(inp)label1=inp.value||'Poor';}
+    if(d5){var inp=d5.querySelector('input.form-input');if(inp)label5=inp.value||'Excellent';}
+    var initialText='This is a message from Cardiology Department, regarding: '+msg+'. '+
+      'Please use your keypad to respond with a rating between 1 and 5 to the following question: '+q+'. '+
+      'Where 1 means: '+label1+', and 5 means: '+label5+'.';
+
+    var ratingN=parseInt(document.getElementById('voiceRatingSelect').value)||1;
+    var detail=document.getElementById('bDetail'+ratingN);
+    var headings=detail?detail.querySelectorAll('.response-heading'):[];
+    var heading=headings.length?headings[0].value:'Thank you';
+    var msgEl=detail?detail.querySelector('.response-message'):null;
+    var respMsg=msgEl?msgEl.value:'';
+    var responseText=heading+(respMsg?'. '+respMsg:'');
+
+    var utt1=new SpeechSynthesisUtterance(initialText);
+    utt1.rate=0.95;
+    utt1.pitch=1;
+    utt1.onend=function(){
+      if(!voicePlaying) return;
+      setTimeout(function(){
+        if(!voicePlaying) return;
+        var utt2=new SpeechSynthesisUtterance(responseText);
+        utt2.rate=0.95;
+        utt2.pitch=1;
+        utt2.onend=function(){stopVoice();};
+        window.speechSynthesis.speak(utt2);
+      },1500);
+    };
+    window.speechSynthesis.speak(utt1);
+  }
+  function stopVoice(){
+    voicePlaying=false;
+    if('speechSynthesis' in window) window.speechSynthesis.cancel();
+    clearInterval(voiceTimerInterval);
+    voiceTimerInterval=null;
+    var icon=document.getElementById('voicePlayIcon');
+    var label=document.getElementById('voicePlayLabel');
+    var status=document.getElementById('voiceStatus');
+    var waveform=document.getElementById('voiceWaveform');
+    if(icon) icon.textContent='play_arrow';
+    if(label) label.textContent='Play voice preview';
+    if(status) status.textContent='Incoming call';
+    if(waveform) waveform.classList.remove('active');
+  }
+  function updateTimerDisplay(){
+    var m=Math.floor(voiceTimerSeconds/60);
+    var s=voiceTimerSeconds%60;
+    document.getElementById('voiceTimer').textContent=m+':'+(s<10?'0':'')+s;
+  }
+  function toggleVoiceScript(){
+    var script=document.getElementById('voiceScript');
+    var arrow=document.getElementById('voiceScriptArrow');
+    if(script.style.display==='none'){
+      script.style.display='block';
+      arrow.textContent='keyboard_arrow_up';
+    } else {
+      script.style.display='none';
+      arrow.textContent='keyboard_arrow_down';
+    }
+  }
+  function populateVoiceScript(){
+    var msg=document.getElementById('ratingMessage').value||'your appointment';
+    var q=document.getElementById('ratingQuestion').value||'your experience';
+    var label1='',label5='';
+    var d1=document.getElementById('bDetail1');
+    var d5=document.getElementById('bDetail5');
+    if(d1){var inp=d1.querySelector('input.form-input');if(inp)label1=inp.value||'Poor';}
+    if(d5){var inp=d5.querySelector('input.form-input');if(inp)label5=inp.value||'Excellent';}
+    document.getElementById('voiceScriptInitial').textContent=
+      'This is a message from Cardiology Department, regarding: '+msg+'. '+
+      'Please use your keypad to respond with a rating between 1 and 5 to the following question: '+q+'. '+
+      'Where 1 means: '+label1+', and 5 means: '+label5+'.';
+    updateVoiceScript();
+  }
+  function selectVoiceRating(n){
+    document.querySelectorAll('.voice-rating-tab').forEach(function(t){
+      var num=parseInt(t.textContent);
+      t.style.background=num===n?'#ADC838':'#E8E8E8';
+      t.style.color=num===n?'#fff':'inherit';
+    });
+    document.getElementById('voiceRatingSelect').value=n;
+    updateVoiceScript();
+  }
+  function updateVoiceScript(){
+    var n=parseInt(document.getElementById('voiceRatingSelect').value)||1;
+    var detail=document.getElementById('bDetail'+n);
+    var headings=detail?detail.querySelectorAll('.response-heading'):[];
+    var heading=headings.length?headings[0].value:'Thank you';
+    var msgEl=detail?detail.querySelector('.response-message'):null;
+    var msg=msgEl?msgEl.value:'';
+    document.getElementById('voiceScriptResponse').textContent=heading+(msg?'. '+msg:'');
+  }
+  function populateSmsBubbles(){
+    var msg=document.getElementById('ratingMessage').value||'your appointment';
+    var q=document.getElementById('ratingQuestion').value||'your experience';
+    var label1='',label5='';
+    var d1=document.getElementById('bDetail1');
+    var d5=document.getElementById('bDetail5');
+    if(d1){var inp=d1.querySelector('input.form-input');if(inp)label1=inp.value||'Poor';}
+    if(d5){var inp=d5.querySelector('input.form-input');if(inp)label5=inp.value||'Excellent';}
+    document.getElementById('smsBubbleOutgoing').textContent=
+      'This is a message from Cardiology Department, regarding: '+msg+
+      '. Please respond with a rating between 1 and 5 to the following question: '+q+
+      '\nWhere 1 means: '+label1+' and 5 means: '+label5;
+    showSmsResponse(1);
+  }
+  function showSmsResponse(n){
+    document.querySelectorAll('.sms-rating-tab').forEach(function(t){
+      var num=parseInt(t.textContent);
+      t.style.background=num===n?'#ADC838':'#E8E8E8';
+      t.style.color=num===n?'#fff':'inherit';
+    });
+    var detail=document.getElementById('bDetail'+n);
+    if(!detail)return;
+    var headings=detail.querySelectorAll('.response-heading');
+    var heading=headings.length?headings[0].value:'Thank you';
+    var msgEl=detail.querySelector('.response-message');
+    var msg=msgEl?msgEl.value:'';
+    var urlEl=detail.querySelector('.response-url');
+    var url=urlEl?urlEl.value:'';
+    var reply=document.getElementById('smsBubbleReply');
+    reply.style.display='block';
+    reply.textContent=n;
+    document.getElementById('smsDelivered').style.display='block';
+    var response=document.getElementById('smsBubbleResponse');
+    response.style.display='block';
+    response.innerHTML='';
+    if(heading){
+      var h=document.createElement('div');
+      h.style.fontWeight='600';
+      h.style.marginBottom=(msg||url)?'4px':'0';
+      h.textContent=heading;
+      response.appendChild(h);
+    }
+    if(msg){
+      var m=document.createElement('div');
+      m.style.marginBottom=url?'8px':'0';
+      m.textContent=msg;
+      response.appendChild(m);
+    }
+    if(url){
+      var a=document.createElement('a');
+      a.href='#';
+      a.className='sms-link';
+      a.textContent=url;
+      a.onclick=function(e){e.preventDefault();};
+      response.appendChild(a);
+    }
+  }
+  document.addEventListener('click',function(e){
+    if(!e.target.closest('.preview-channel-wrapper')){
+      document.querySelectorAll('.preview-channel-dropdown').forEach(function(d){d.style.display='none';});
+    }
+  });
+
+  function showInlinePreview(n){
+    document.querySelectorAll('.inline-preview-nums .pnum-wrap').forEach(function(p,i){
+      p.classList.toggle('active',(i+1)===n);
+    });
+    /* Pull labels from edit tab for all ratings */
+    for(var i=1;i<=5;i++){
+      var detail=document.getElementById('bDetail'+i);
+      if(!detail) continue;
+      var labelInput=detail.querySelector('input.form-input');
+      var labelEl=document.getElementById('previewLabel'+i);
+      if(labelEl) labelEl.textContent=labelInput&&labelInput.value?labelInput.value:'';
+    }
+    var detail=document.getElementById('bDetail'+n);
+    if(!detail) return;
+    var headings=detail.querySelectorAll('.response-heading');
+    var responseHeading=headings.length?headings[0]:null;
+    var message=detail.querySelector('.response-message');
+    var url=detail.querySelector('.response-url');
+    var linkText=detail.querySelector('.response-link-text');
+    document.getElementById('inlinePreviewHeading').textContent=responseHeading&&responseHeading.value?responseHeading.value:'Thank you';
+    document.getElementById('inlinePreviewMessage').textContent=message&&message.value?message.value:'';
+    var previewLink=document.getElementById('inlinePreviewLink');
+    if(url&&url.value){
+      previewLink.style.display='inline-flex';
+      previewLink.href=url.value;
+      document.getElementById('inlinePreviewLinkText').textContent=linkText&&linkText.value?linkText.value:'Visit Link';
+    } else {
+      previewLink.style.display='none';
+    }
+  }
+
+  /* URL Validation */
+  function validateUrl(input){
+    var val=input.value.trim();
+    var errorMsg=input.nextElementSibling;
+    if(!errorMsg||!errorMsg.classList.contains('url-error-msg')) return;
+    if(val===''){
+      input.classList.remove('input-error','input-valid');
+      errorMsg.classList.remove('visible');
+      return;
+    }
+    /* Auto-prepend https:// for www. entries */
+    if(/^www\./i.test(val)){
+      val='https://'+val;
+      input.value=val;
+    }
+    var pattern=/^https?:\/\/([\w\-]+\.)+[a-zA-Z]{2,}(\/[\w\-._~:/?#\[\]@!$&'()*+,;=%]*)?$/;
+    if(pattern.test(val)){
+      input.classList.remove('input-error');
+      input.classList.add('input-valid');
+      errorMsg.classList.remove('visible');
+    } else {
+      input.classList.remove('input-valid');
+      input.classList.add('input-error');
+      errorMsg.classList.add('visible');
+    }
+  }
+
+  /* Init response previews on load */
+  document.querySelectorAll('.rating-response-card').forEach(function(card){
+    var heading=card.querySelector('.response-heading');
+    var preview=card.querySelector('.response-preview');
+    if(heading&&heading.value&&preview){
+      preview.textContent=' â€” '+heading.value;
+    }
+  });
+</script>
+</body>
+</html>
