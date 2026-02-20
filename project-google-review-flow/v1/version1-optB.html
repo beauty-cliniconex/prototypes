@@ -143,7 +143,7 @@ body{font-family:"Nunito Sans","Nunito",sans-serif;background:var(--surface-page
 .fab{width:56px;height:56px;border-radius:50%;background:var(--fab-color);color:var(--ccx-white);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.25);transition:transform .15s,box-shadow .15s;position:relative;}
 .fab:hover{transform:scale(1.07);box-shadow:0 6px 18px rgba(0,0,0,.3);}
 .fab .material-icons{font-size:24px;}
-.fab::after{content:attr(data-tooltip);position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);background:rgba(60,60,60,.92);color:#fff;padding:8px 16px;border-radius:0;font-size:14px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;}
+.fab::after{content:attr(data-tooltip);position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);background:rgba(60,60,60,.92);color:#fff;padding:8px 16px;border-radius:var(--radius-md);font-family:"Nunito Sans","Nunito",sans-serif;font-size:14px;font-weight:400;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;}
 .fab:hover::after{opacity:1;}
 
 
